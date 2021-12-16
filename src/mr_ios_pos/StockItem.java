@@ -45,7 +45,7 @@ public class StockItem {
 			return "%";
 		}
 		else {
-			return "�";
+			return "£";
 		}
 		
 	}
