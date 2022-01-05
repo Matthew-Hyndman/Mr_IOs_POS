@@ -161,16 +161,27 @@
               <SubComponents>
                 <Component class="javax.swing.JTable" name="tableStockView">
                   <Properties>
+                    <Property name="autoCreateRowSorter" type="boolean" value="true"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="99" red="66" type="rgb"/>
+                    </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="0" rowCount="0"/>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0"/>
                     </Property>
+                    <Property name="columnSelectionAllowed" type="boolean" value="false"/>
+                    <Property name="name" type="java.lang.String" value="" noResource="true"/>
+                    <Property name="showGrid" type="boolean" value="true"/>
+                    <Property name="showVerticalLines" type="boolean" value="false"/>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableStockViewMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -208,6 +219,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Edit"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bStockEditActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="bStockDelete">
               <Properties>
@@ -692,37 +706,37 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="bUpdateItemBack1" min="-2" max="-2" attributes="0"/>
+                      <Component id="bUpdateItemBack" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="tfUpdateItemRRP1" max="32767" attributes="0"/>
+                              <Component id="tfUpdateItemRRP" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="layeredPaneUpdateItemDetails1" alignment="1" max="32767" attributes="0"/>
+                          <Component id="layeredPaneUpdateItemDetails" alignment="1" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="lUpdateItemItemName1" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lUpdateItemNoInStock1" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lUpdateItemItemName" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lUpdateItemNoInStock" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="comUpdateItemSelecter1" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="tfUpdateItemNoInStock1" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="comUpdateItemSelecter" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="tfUpdateItemNoInStock" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="tfUpdateItemItemName1" min="-2" pref="380" max="-2" attributes="0"/>
+                                      <Component id="tfUpdateItemItemName" min="-2" pref="380" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="bUpdateItemSubmit1" min="-2" max="-2" attributes="0"/>
+                      <Component id="bUpdateItemSubmit" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -734,28 +748,28 @@
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lUpdateItemItemName1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tfUpdateItemItemName1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="bUpdateItemBack1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lUpdateItemItemName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tfUpdateItemItemName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="bUpdateItemBack" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lUpdateItemNoInStock1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tfUpdateItemNoInStock1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lUpdateItemNoInStock" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tfUpdateItemNoInStock" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="comUpdateItemSelecter1" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="comUpdateItemSelecter" min="-2" pref="36" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="layeredPaneUpdateItemDetails1" min="-2" max="-2" attributes="0"/>
+                              <Component id="layeredPaneUpdateItemDetails" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel14" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="tfUpdateItemRRP1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tfUpdateItemRRP" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="-2" pref="290" max="-2" attributes="0"/>
-                              <Component id="bUpdateItemSubmit1" min="-2" max="-2" attributes="0"/>
+                              <Component id="bUpdateItemSubmit" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
@@ -764,7 +778,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="bUpdateItemSubmit1">
+            <Component class="javax.swing.JButton" name="bUpdateItemSubmit">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
@@ -772,10 +786,10 @@
                 <Property name="text" type="java.lang.String" value="Submit"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bUpdateItemSubmit1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bUpdateItemSubmitActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lUpdateItemItemName1">
+            <Component class="javax.swing.JLabel" name="lUpdateItemItemName">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
@@ -783,14 +797,14 @@
                 <Property name="text" type="java.lang.String" value="Item Name:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="tfUpdateItemItemName1">
+            <Component class="javax.swing.JTextField" name="tfUpdateItemItemName">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lUpdateItemNoInStock1">
+            <Component class="javax.swing.JLabel" name="lUpdateItemNoInStock">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
@@ -798,14 +812,14 @@
                 <Property name="text" type="java.lang.String" value="No In Stock:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="tfUpdateItemNoInStock1">
+            <Component class="javax.swing.JTextField" name="tfUpdateItemNoInStock">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
                 </Property>
               </Properties>
             </Component>
-            <Container class="javax.swing.JLayeredPane" name="layeredPaneUpdateItemDetails1">
+            <Container class="javax.swing.JLayeredPane" name="layeredPaneUpdateItemDetails">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
@@ -831,23 +845,23 @@
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lUpdateItemCost1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lUpdateItemMarkUp1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lUpdateItemCost" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lUpdateItemMarkUp" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                           <Group type="102" alignment="1" attributes="0">
-                                              <Component id="tfUpdateItemMarkUpA1" max="32767" attributes="0"/>
+                                              <Component id="tfUpdateItemMarkUpA" max="32767" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="comUpdateItemMarkUpTypeA1" min="-2" pref="58" max="-2" attributes="0"/>
+                                              <Component id="comUpdateItemMarkUpTypeA" min="-2" pref="58" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="tfUpdateItemCostA1" alignment="0" min="-2" pref="336" max="-2" attributes="0"/>
+                                          <Component id="tfUpdateItemCostA" alignment="0" min="-2" pref="336" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="lUpdateItemSellingPrice1" max="32767" attributes="0"/>
+                                      <Component id="lUpdateItemSellingPrice" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace pref="115" max="32767" attributes="0"/>
@@ -859,21 +873,21 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lUpdateItemCost1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tfUpdateItemCostA1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lUpdateItemCost" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tfUpdateItemCostA" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lUpdateItemMarkUp1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lUpdateItemMarkUp" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                      <Component id="tfUpdateItemMarkUpA1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="comUpdateItemMarkUpTypeA1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="tfUpdateItemMarkUpA" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="comUpdateItemMarkUpTypeA" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lUpdateItemSellingPrice1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lUpdateItemSellingPrice" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace pref="21" max="32767" attributes="0"/>
                           </Group>
@@ -881,7 +895,7 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="lUpdateItemCost1">
+                    <Component class="javax.swing.JLabel" name="lUpdateItemCost">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="18" style="0"/>
@@ -889,17 +903,17 @@
                         <Property name="text" type="java.lang.String" value="Cost &#xa3;:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="tfUpdateItemCostA1">
+                    <Component class="javax.swing.JTextField" name="tfUpdateItemCostA">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="18" style="0"/>
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfUpdateItemCostA1KeyReleased"/>
+                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfUpdateItemCostAKeyReleased"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="lUpdateItemMarkUp1">
+                    <Component class="javax.swing.JLabel" name="lUpdateItemMarkUp">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="18" style="0"/>
@@ -907,17 +921,17 @@
                         <Property name="text" type="java.lang.String" value="Mark Up:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="tfUpdateItemMarkUpA1">
+                    <Component class="javax.swing.JTextField" name="tfUpdateItemMarkUpA">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="18" style="0"/>
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfUpdateItemMarkUpA1KeyReleased"/>
+                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfUpdateItemMarkUpAKeyReleased"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="comUpdateItemMarkUpTypeA1">
+                    <Component class="javax.swing.JComboBox" name="comUpdateItemMarkUpTypeA">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="18" style="0"/>
@@ -930,7 +944,7 @@
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="comUpdateItemMarkUpTypeA1ItemStateChanged"/>
+                        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="comUpdateItemMarkUpTypeAItemStateChanged"/>
                       </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -944,7 +958,7 @@
                         <Property name="text" type="java.lang.String" value="Selling Price &#xa3;:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="lUpdateItemSellingPrice1">
+                    <Component class="javax.swing.JLabel" name="lUpdateItemSellingPrice">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="18" style="0"/>
@@ -984,14 +998,14 @@
                                           </Group>
                                       </Group>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lUpdateItemMarkUpB1" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="tfUpdateItemSellingPriceB1" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="lUpdateItemMarkUpB" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="tfUpdateItemSellingPriceB" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
-                                      <Component id="tfUpdateItemCostB1" min="-2" pref="336" max="-2" attributes="0"/>
+                                      <Component id="tfUpdateItemCostB" min="-2" pref="336" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
@@ -1004,17 +1018,17 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tfUpdateItemCostB1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tfUpdateItemCostB" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tfUpdateItemSellingPriceB1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tfUpdateItemSellingPriceB" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lUpdateItemMarkUpB1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lUpdateItemMarkUpB" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace pref="21" max="32767" attributes="0"/>
                           </Group>
@@ -1030,14 +1044,14 @@
                         <Property name="text" type="java.lang.String" value="Cost &#xa3;:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="tfUpdateItemCostB1">
+                    <Component class="javax.swing.JTextField" name="tfUpdateItemCostB">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="18" style="0"/>
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfUpdateItemCostB1KeyReleased"/>
+                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfUpdateItemCostBKeyReleased"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel12">
@@ -1048,14 +1062,14 @@
                         <Property name="text" type="java.lang.String" value="Selling Price &#xa3;:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="tfUpdateItemSellingPriceB1">
+                    <Component class="javax.swing.JTextField" name="tfUpdateItemSellingPriceB">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="18" style="0"/>
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfUpdateItemSellingPriceB1KeyReleased"/>
+                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfUpdateItemSellingPriceBKeyReleased"/>
                       </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel13">
@@ -1066,7 +1080,7 @@
                         <Property name="text" type="java.lang.String" value="Mark Up &#xa3;:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="lUpdateItemMarkUpB1">
+                    <Component class="javax.swing.JLabel" name="lUpdateItemMarkUpB">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="18" style="0"/>
@@ -1078,7 +1092,7 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JComboBox" name="comUpdateItemSelecter1">
+            <Component class="javax.swing.JComboBox" name="comUpdateItemSelecter">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
@@ -1091,7 +1105,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comUpdateItemSelecter1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comUpdateItemSelecterActionPerformed"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -1105,14 +1119,14 @@
                 <Property name="text" type="java.lang.String" value="Recommended Retail Price (RRP) &#xa3;:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="tfUpdateItemRRP1">
+            <Component class="javax.swing.JTextField" name="tfUpdateItemRRP">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="bUpdateItemBack1">
+            <Component class="javax.swing.JButton" name="bUpdateItemBack">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
@@ -1120,7 +1134,7 @@
                 <Property name="text" type="java.lang.String" value="&lt;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bUpdateItemBack1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bUpdateItemBackActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

@@ -36,11 +36,14 @@ public class POS_Main extends javax.swing.JFrame {
     PreparedStatement pst = null;
     ResultSet rs = null;
     int q, i, id, deleteItem;
+    DefaultTableModel dtm;
+    
     
     public POS_Main() {        
-        initComponents();
+        initComponents();        
+        updateDB();
         initVars();
-        //updateDB();
+        
     }
     
     public  void updateDB(){
@@ -52,21 +55,31 @@ public class POS_Main extends javax.swing.JFrame {
             ResultSetMetaData stData = rs.getMetaData();
             q = stData.getColumnCount();
 
-            DefaultTableModel dtm = (DefaultTableModel)tableStockView.getModel();
+            dtm = (DefaultTableModel)tableStockView.getModel();
+            tableStockView.setModel(dtm);
+            dtm.addColumn("Item ID");
+            dtm.addColumn("Item Name");
+            dtm.addColumn("No In Stock");
+            dtm.addColumn("Selling Price");
+            dtm.addColumn("Cost");
+            dtm.addColumn("Mark Up");
+            dtm.addColumn("Is Mark Up Percent");
+            dtm.addColumn("RRP");
+
             dtm.setRowCount(0);
             
             while(rs.next()){
                 Vector colDat = new Vector();
                 
                 for (i = 1; i <= q; i++) {
-                   colDat.add(rs.getShort("ItemID"));
-                   colDat.add(rs.getShort("Item_Name"));
-                   colDat.add(rs.getShort("No_In_Stock"));
-                   colDat.add(rs.getShort("Selling_Price"));
-                   colDat.add(rs.getShort("Cost"));
-                   colDat.add(rs.getShort("markUp"));
-                   colDat.add(rs.getShort("Is_markUp_Percent"));
-                   colDat.add(rs.getShort("RRP"));
+                   colDat.add(rs.getString("ItemID"));
+                   colDat.add(rs.getString("Item_Name"));
+                   colDat.add(rs.getString("No_In_Stock"));
+                   colDat.add(rs.getString("Selling_Price"));
+                   colDat.add(rs.getString("Cost"));
+                   colDat.add(rs.getString("markUp"));
+                   colDat.add(rs.getString("Is_markUp_Percent"));
+                   colDat.add(rs.getString("RRP"));
                 }
                 dtm.addRow(colDat);
             }
@@ -117,31 +130,31 @@ public class POS_Main extends javax.swing.JFrame {
         tfAddItemRRP = new javax.swing.JTextField();
         bAddItemBack = new javax.swing.JButton();
         UpdateItem = new javax.swing.JPanel();
-        bUpdateItemSubmit1 = new javax.swing.JButton();
-        lUpdateItemItemName1 = new javax.swing.JLabel();
-        tfUpdateItemItemName1 = new javax.swing.JTextField();
-        lUpdateItemNoInStock1 = new javax.swing.JLabel();
-        tfUpdateItemNoInStock1 = new javax.swing.JTextField();
-        layeredPaneUpdateItemDetails1 = new javax.swing.JLayeredPane();
+        bUpdateItemSubmit = new javax.swing.JButton();
+        lUpdateItemItemName = new javax.swing.JLabel();
+        tfUpdateItemItemName = new javax.swing.JTextField();
+        lUpdateItemNoInStock = new javax.swing.JLabel();
+        tfUpdateItemNoInStock = new javax.swing.JTextField();
+        layeredPaneUpdateItemDetails = new javax.swing.JLayeredPane();
         CostAndMarkUp1 = new javax.swing.JPanel();
-        lUpdateItemCost1 = new javax.swing.JLabel();
-        tfUpdateItemCostA1 = new javax.swing.JTextField();
-        lUpdateItemMarkUp1 = new javax.swing.JLabel();
-        tfUpdateItemMarkUpA1 = new javax.swing.JTextField();
-        comUpdateItemMarkUpTypeA1 = new javax.swing.JComboBox<>();
+        lUpdateItemCost = new javax.swing.JLabel();
+        tfUpdateItemCostA = new javax.swing.JTextField();
+        lUpdateItemMarkUp = new javax.swing.JLabel();
+        tfUpdateItemMarkUpA = new javax.swing.JTextField();
+        comUpdateItemMarkUpTypeA = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        lUpdateItemSellingPrice1 = new javax.swing.JLabel();
+        lUpdateItemSellingPrice = new javax.swing.JLabel();
         CostAndSellingPrice1 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        tfUpdateItemCostB1 = new javax.swing.JTextField();
+        tfUpdateItemCostB = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        tfUpdateItemSellingPriceB1 = new javax.swing.JTextField();
+        tfUpdateItemSellingPriceB = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        lUpdateItemMarkUpB1 = new javax.swing.JLabel();
-        comUpdateItemSelecter1 = new javax.swing.JComboBox<>();
+        lUpdateItemMarkUpB = new javax.swing.JLabel();
+        comUpdateItemSelecter = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
-        tfUpdateItemRRP1 = new javax.swing.JTextField();
-        bUpdateItemBack1 = new javax.swing.JButton();
+        tfUpdateItemRRP = new javax.swing.JTextField();
+        bUpdateItemBack = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItemFileDelete = new javax.swing.JMenuItem();
@@ -157,6 +170,8 @@ public class POS_Main extends javax.swing.JFrame {
 
         stock.setBorder(new javax.swing.border.MatteBorder(null));
 
+        tableStockView.setAutoCreateRowSorter(true);
+        tableStockView.setBackground(new java.awt.Color(102, 153, 255));
         tableStockView.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -165,6 +180,15 @@ public class POS_Main extends javax.swing.JFrame {
 
             }
         ));
+        tableStockView.setColumnSelectionAllowed(false);
+        tableStockView.setName(""); // NOI18N
+        tableStockView.setShowGrid(true);
+        tableStockView.setShowVerticalLines(false);
+        tableStockView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableStockViewMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableStockView);
 
         tfStockSearch.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -183,6 +207,11 @@ public class POS_Main extends javax.swing.JFrame {
 
         bStockEdit.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         bStockEdit.setText("Edit");
+        bStockEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bStockEditActionPerformed(evt);
+            }
+        });
 
         bStockDelete.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         bStockDelete.setText("Delete");
@@ -494,60 +523,60 @@ public class POS_Main extends javax.swing.JFrame {
 
         jLayeredPane.add(addItem, "card3");
 
-        bUpdateItemSubmit1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        bUpdateItemSubmit1.setText("Submit");
-        bUpdateItemSubmit1.addActionListener(new java.awt.event.ActionListener() {
+        bUpdateItemSubmit.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        bUpdateItemSubmit.setText("Submit");
+        bUpdateItemSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bUpdateItemSubmit1ActionPerformed(evt);
+                bUpdateItemSubmitActionPerformed(evt);
             }
         });
 
-        lUpdateItemItemName1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lUpdateItemItemName1.setText("Item Name:");
+        lUpdateItemItemName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lUpdateItemItemName.setText("Item Name:");
 
-        tfUpdateItemItemName1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tfUpdateItemItemName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        lUpdateItemNoInStock1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lUpdateItemNoInStock1.setText("No In Stock:");
+        lUpdateItemNoInStock.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lUpdateItemNoInStock.setText("No In Stock:");
 
-        tfUpdateItemNoInStock1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tfUpdateItemNoInStock.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        layeredPaneUpdateItemDetails1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        layeredPaneUpdateItemDetails1.setLayout(new java.awt.CardLayout());
+        layeredPaneUpdateItemDetails.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        layeredPaneUpdateItemDetails.setLayout(new java.awt.CardLayout());
 
-        lUpdateItemCost1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lUpdateItemCost1.setText("Cost £:");
+        lUpdateItemCost.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lUpdateItemCost.setText("Cost £:");
 
-        tfUpdateItemCostA1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        tfUpdateItemCostA1.addKeyListener(new java.awt.event.KeyAdapter() {
+        tfUpdateItemCostA.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tfUpdateItemCostA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                tfUpdateItemCostA1KeyReleased(evt);
+                tfUpdateItemCostAKeyReleased(evt);
             }
         });
 
-        lUpdateItemMarkUp1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lUpdateItemMarkUp1.setText("Mark Up:");
+        lUpdateItemMarkUp.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lUpdateItemMarkUp.setText("Mark Up:");
 
-        tfUpdateItemMarkUpA1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        tfUpdateItemMarkUpA1.addKeyListener(new java.awt.event.KeyAdapter() {
+        tfUpdateItemMarkUpA.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tfUpdateItemMarkUpA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                tfUpdateItemMarkUpA1KeyReleased(evt);
+                tfUpdateItemMarkUpAKeyReleased(evt);
             }
         });
 
-        comUpdateItemMarkUpTypeA1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        comUpdateItemMarkUpTypeA1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "%", "£" }));
-        comUpdateItemMarkUpTypeA1.addItemListener(new java.awt.event.ItemListener() {
+        comUpdateItemMarkUpTypeA.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        comUpdateItemMarkUpTypeA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "%", "£" }));
+        comUpdateItemMarkUpTypeA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                comUpdateItemMarkUpTypeA1ItemStateChanged(evt);
+                comUpdateItemMarkUpTypeAItemStateChanged(evt);
             }
         });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("Selling Price £:");
 
-        lUpdateItemSellingPrice1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lUpdateItemSellingPrice1.setText("- - -");
+        lUpdateItemSellingPrice.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lUpdateItemSellingPrice.setText("- - -");
 
         javax.swing.GroupLayout CostAndMarkUp1Layout = new javax.swing.GroupLayout(CostAndMarkUp1);
         CostAndMarkUp1.setLayout(CostAndMarkUp1Layout);
@@ -558,19 +587,19 @@ public class POS_Main extends javax.swing.JFrame {
                 .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(CostAndMarkUp1Layout.createSequentialGroup()
                         .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lUpdateItemCost1)
-                            .addComponent(lUpdateItemMarkUp1))
+                            .addComponent(lUpdateItemCost)
+                            .addComponent(lUpdateItemMarkUp))
                         .addGap(18, 18, 18)
                         .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CostAndMarkUp1Layout.createSequentialGroup()
-                                .addComponent(tfUpdateItemMarkUpA1)
+                                .addComponent(tfUpdateItemMarkUpA)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comUpdateItemMarkUpTypeA1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(tfUpdateItemCostA1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(comUpdateItemMarkUpTypeA, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfUpdateItemCostA, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(CostAndMarkUp1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lUpdateItemSellingPrice1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(lUpdateItemSellingPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(115, Short.MAX_VALUE))
         );
         CostAndMarkUp1Layout.setVerticalGroup(
@@ -578,50 +607,50 @@ public class POS_Main extends javax.swing.JFrame {
             .addGroup(CostAndMarkUp1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lUpdateItemCost1)
-                    .addComponent(tfUpdateItemCostA1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lUpdateItemCost)
+                    .addComponent(tfUpdateItemCostA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lUpdateItemMarkUp1)
+                    .addComponent(lUpdateItemMarkUp)
                     .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(tfUpdateItemMarkUpA1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(comUpdateItemMarkUpTypeA1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tfUpdateItemMarkUpA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comUpdateItemMarkUpTypeA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(lUpdateItemSellingPrice1))
+                    .addComponent(lUpdateItemSellingPrice))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        layeredPaneUpdateItemDetails1.add(CostAndMarkUp1, "card2");
+        layeredPaneUpdateItemDetails.add(CostAndMarkUp1, "card2");
 
         CostAndSellingPrice1.setPreferredSize(new java.awt.Dimension(354, 126));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel10.setText("Cost £:");
 
-        tfUpdateItemCostB1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        tfUpdateItemCostB1.addKeyListener(new java.awt.event.KeyAdapter() {
+        tfUpdateItemCostB.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tfUpdateItemCostB.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                tfUpdateItemCostB1KeyReleased(evt);
+                tfUpdateItemCostBKeyReleased(evt);
             }
         });
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel12.setText("Selling Price £:");
 
-        tfUpdateItemSellingPriceB1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        tfUpdateItemSellingPriceB1.addKeyListener(new java.awt.event.KeyAdapter() {
+        tfUpdateItemSellingPriceB.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tfUpdateItemSellingPriceB.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                tfUpdateItemSellingPriceB1KeyReleased(evt);
+                tfUpdateItemSellingPriceBKeyReleased(evt);
             }
         });
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel13.setText("Mark Up £:");
 
-        lUpdateItemMarkUpB1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lUpdateItemMarkUpB1.setText("- - -");
+        lUpdateItemMarkUpB.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lUpdateItemMarkUpB.setText("- - -");
 
         javax.swing.GroupLayout CostAndSellingPrice1Layout = new javax.swing.GroupLayout(CostAndSellingPrice1);
         CostAndSellingPrice1.setLayout(CostAndSellingPrice1Layout);
@@ -639,12 +668,12 @@ public class POS_Main extends javax.swing.JFrame {
                                 .addComponent(jLabel13)
                                 .addGap(44, 44, 44)))
                         .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lUpdateItemMarkUpB1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tfUpdateItemSellingPriceB1)))
+                            .addComponent(lUpdateItemMarkUpB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tfUpdateItemSellingPriceB)))
                     .addGroup(CostAndSellingPrice1Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(74, 74, 74)
-                        .addComponent(tfUpdateItemCostB1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tfUpdateItemCostB, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(23, 23, 23))
         );
         CostAndSellingPrice1Layout.setVerticalGroup(
@@ -653,38 +682,38 @@ public class POS_Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(tfUpdateItemCostB1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfUpdateItemCostB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(tfUpdateItemSellingPriceB1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfUpdateItemSellingPriceB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(lUpdateItemMarkUpB1))
+                    .addComponent(lUpdateItemMarkUpB))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        layeredPaneUpdateItemDetails1.add(CostAndSellingPrice1, "card2");
+        layeredPaneUpdateItemDetails.add(CostAndSellingPrice1, "card2");
 
-        comUpdateItemSelecter1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        comUpdateItemSelecter1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cost and Mark Up", "Cost and Selling Price" }));
-        comUpdateItemSelecter1.addActionListener(new java.awt.event.ActionListener() {
+        comUpdateItemSelecter.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        comUpdateItemSelecter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cost and Mark Up", "Cost and Selling Price" }));
+        comUpdateItemSelecter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comUpdateItemSelecter1ActionPerformed(evt);
+                comUpdateItemSelecterActionPerformed(evt);
             }
         });
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel14.setText("Recommended Retail Price (RRP) £:");
 
-        tfUpdateItemRRP1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tfUpdateItemRRP.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        bUpdateItemBack1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        bUpdateItemBack1.setText("<");
-        bUpdateItemBack1.addActionListener(new java.awt.event.ActionListener() {
+        bUpdateItemBack.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        bUpdateItemBack.setText("<");
+        bUpdateItemBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bUpdateItemBack1ActionPerformed(evt);
+                bUpdateItemBackActionPerformed(evt);
             }
         });
 
@@ -694,29 +723,29 @@ public class POS_Main extends javax.swing.JFrame {
             UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(UpdateItemLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(bUpdateItemBack1)
+                .addComponent(bUpdateItemBack)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(UpdateItemLayout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfUpdateItemRRP1))
-                    .addComponent(layeredPaneUpdateItemDetails1)
+                        .addComponent(tfUpdateItemRRP))
+                    .addComponent(layeredPaneUpdateItemDetails)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, UpdateItemLayout.createSequentialGroup()
                         .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lUpdateItemItemName1)
-                            .addComponent(lUpdateItemNoInStock1))
+                            .addComponent(lUpdateItemItemName)
+                            .addComponent(lUpdateItemNoInStock))
                         .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(UpdateItemLayout.createSequentialGroup()
                                 .addGap(25, 25, 25)
                                 .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comUpdateItemSelecter1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tfUpdateItemNoInStock1)))
+                                    .addComponent(comUpdateItemSelecter, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(tfUpdateItemNoInStock)))
                             .addGroup(UpdateItemLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tfUpdateItemItemName1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(tfUpdateItemItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(18, 18, 18)
-                .addComponent(bUpdateItemSubmit1)
+                .addComponent(bUpdateItemSubmit)
                 .addContainerGap())
         );
         UpdateItemLayout.setVerticalGroup(
@@ -726,24 +755,24 @@ public class POS_Main extends javax.swing.JFrame {
                     .addGroup(UpdateItemLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lUpdateItemItemName1)
-                            .addComponent(tfUpdateItemItemName1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bUpdateItemBack1))
+                            .addComponent(lUpdateItemItemName)
+                            .addComponent(tfUpdateItemItemName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bUpdateItemBack))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lUpdateItemNoInStock1)
-                            .addComponent(tfUpdateItemNoInStock1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lUpdateItemNoInStock)
+                            .addComponent(tfUpdateItemNoInStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
-                        .addComponent(comUpdateItemSelecter1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comUpdateItemSelecter, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(layeredPaneUpdateItemDetails1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(layeredPaneUpdateItemDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tfUpdateItemRRP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(tfUpdateItemRRP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(UpdateItemLayout.createSequentialGroup()
                         .addGap(290, 290, 290)
-                        .addComponent(bUpdateItemSubmit1)))
+                        .addComponent(bUpdateItemSubmit)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -790,15 +819,7 @@ public class POS_Main extends javax.swing.JFrame {
 
     private void initVars(){
         arrayList = new ArrayList<StockItem>();
-        /*tableStockView.setModel(dtm);
-        dtm.addColumn("Item ID");
-        dtm.addColumn("Item Name");
-        dtm.addColumn("No In Stock");
-        dtm.addColumn("Selling Price");
-        dtm.addColumn("Cost");
-        dtm.addColumn("Mark Up");
-        dtm.addColumn("Is Mark Up Percent");
-        dtm.addColumn("RRP");*/
+       
         
     }
     
@@ -926,7 +947,7 @@ public class POS_Main extends javax.swing.JFrame {
                             Double.valueOf(tfAddItemMarkUpA.getText()), is_percent,
                             Double.valueOf(tfAddItemRRP.getText())));
 
-                    /*dtm.addRow(new Object[]{
+                    dtm.addRow(new Object[]{
                         itemID,
                         tfAddItemItemName.getText(),
                         Integer.valueOf(tfAddItemNoInStock.getText()),
@@ -935,7 +956,7 @@ public class POS_Main extends javax.swing.JFrame {
                         Double.valueOf(tfAddItemMarkUpA.getText()),
                         is_percent,
                         Double.valueOf(tfAddItemRRP.getText())
-                    });*/
+                    });
 
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
@@ -961,7 +982,7 @@ public class POS_Main extends javax.swing.JFrame {
                             Double.valueOf(tfAddItemSellingPriceB.getText()), Double.valueOf(tfAddItemCostB.getText()),
                             Double.valueOf(lAddItemMarkUpB.getText()), false, Double.valueOf(tfAddItemRRP.getText())));
 
-                    /*dtm.addRow(new Object[]{
+                    dtm.addRow(new Object[]{
                         itemID,
                         tfAddItemItemName.getText(),
                         Integer.valueOf(tfAddItemNoInStock.getText()),
@@ -970,7 +991,7 @@ public class POS_Main extends javax.swing.JFrame {
                         Double.valueOf(lAddItemMarkUpB.getText()),
                         false,
                         Double.valueOf(tfAddItemRRP.getText())
-                    });*/
+                    });
 
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
@@ -1077,44 +1098,100 @@ public class POS_Main extends javax.swing.JFrame {
         tfAddItemRRP.setText("");
     }//GEN-LAST:event_bAddItemBackActionPerformed
 
-    private void bUpdateItemSubmit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateItemSubmit1ActionPerformed
+    private void bUpdateItemSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateItemSubmitActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_bUpdateItemSubmit1ActionPerformed
+    }//GEN-LAST:event_bUpdateItemSubmitActionPerformed
 
-    private void tfUpdateItemCostA1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfUpdateItemCostA1KeyReleased
+    private void tfUpdateItemCostAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfUpdateItemCostAKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfUpdateItemCostA1KeyReleased
+    }//GEN-LAST:event_tfUpdateItemCostAKeyReleased
 
-    private void tfUpdateItemMarkUpA1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfUpdateItemMarkUpA1KeyReleased
+    private void tfUpdateItemMarkUpAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfUpdateItemMarkUpAKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfUpdateItemMarkUpA1KeyReleased
+    }//GEN-LAST:event_tfUpdateItemMarkUpAKeyReleased
 
-    private void comUpdateItemMarkUpTypeA1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comUpdateItemMarkUpTypeA1ItemStateChanged
+    private void comUpdateItemMarkUpTypeAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comUpdateItemMarkUpTypeAItemStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_comUpdateItemMarkUpTypeA1ItemStateChanged
+        
+    }//GEN-LAST:event_comUpdateItemMarkUpTypeAItemStateChanged
 
-    private void tfUpdateItemCostB1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfUpdateItemCostB1KeyReleased
+    private void tfUpdateItemCostBKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfUpdateItemCostBKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfUpdateItemCostB1KeyReleased
+        ValUpdateitemSetUp2(this.tfUpdateItemCostB);
+    }//GEN-LAST:event_tfUpdateItemCostBKeyReleased
 
-    private void tfUpdateItemSellingPriceB1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfUpdateItemSellingPriceB1KeyReleased
+    private void tfUpdateItemSellingPriceBKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfUpdateItemSellingPriceBKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfUpdateItemSellingPriceB1KeyReleased
+        ValUpdateitemSetUp2(this.tfUpdateItemSellingPriceB);
+    }//GEN-LAST:event_tfUpdateItemSellingPriceBKeyReleased
 
-    private void comUpdateItemSelecter1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comUpdateItemSelecter1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comUpdateItemSelecter1ActionPerformed
+    private void bUpdateItemBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateItemBackActionPerformed
+        jLayeredPane.removeAll();
+        jLayeredPane.add(stock);
+        jLayeredPane.repaint();
+        jLayeredPane.revalidate();
 
-    private void bUpdateItemBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateItemBack1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bUpdateItemBack1ActionPerformed
+        tfUpdateItemSellingPriceB.setText("- - -");
+        tfUpdateItemCostB.setText("");
+        lUpdateItemMarkUpB.setText("");
+        lUpdateItemSellingPrice.setText("- - -");
+        tfUpdateItemCostA.setText("");
+        tfUpdateItemMarkUpA.setText("");
+        comUpdateItemMarkUpTypeA.setSelectedIndex(0);
+        tfUpdateItemRRP.setText("");
+        tfUpdateItemItemName.setText("");
+        tfUpdateItemNoInStock.setText("");
+        tfUpdateItemRRP.setText("");
+    }//GEN-LAST:event_bUpdateItemBackActionPerformed
+
+    private void comUpdateItemSelecterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comUpdateItemSelecterActionPerformed
+        if (comUpdateItemSelecter.getSelectedIndex() == 0) {
+            layeredPaneUpdateItemDetails.removeAll();
+            layeredPaneUpdateItemDetails.add(CostAndMarkUp1);
+            layeredPaneUpdateItemDetails.repaint();
+            layeredPaneUpdateItemDetails.revalidate();
+        } else {
+            layeredPaneUpdateItemDetails.removeAll();
+            layeredPaneUpdateItemDetails.add(CostAndSellingPrice1);
+            layeredPaneUpdateItemDetails.repaint();
+            layeredPaneUpdateItemDetails.revalidate();
+        }    }//GEN-LAST:event_comUpdateItemSelecterActionPerformed
+
+    private void bStockEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bStockEditActionPerformed
+        jLayeredPane.removeAll();
+        jLayeredPane.add(UpdateItem);
+        jLayeredPane.repaint();
+        jLayeredPane.revalidate();    }//GEN-LAST:event_bStockEditActionPerformed
+
+    private void tableStockViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableStockViewMouseClicked
+        // this dose not work correctly, fix it
+            DefaultTableModel dtm = (DefaultTableModel)tableStockView.getModel();
+            int selsectedRow = tableStockView.getSelectedRow();
+            
+            tfUpdateItemItemName.setText(tableStockView.getValueAt(selsectedRow, 2).toString());
+            tfUpdateItemNoInStock.setText(tableStockView.getValueAt(selsectedRow, 3).toString());
+            
+            tfUpdateItemCostA.setText(tableStockView.getValueAt(selsectedRow, 5).toString());
+            lUpdateItemSellingPrice.setText(tableStockView.getValueAt(selsectedRow, 4).toString());
+            tfUpdateItemMarkUpA.setText(tableStockView.getValueAt(selsectedRow, 6).toString());
+            tfUpdateItemRRP.setText(tableStockView.getValueAt(selsectedRow, 8).toString());
+
+            if(tableStockView.getValueAt(selsectedRow, 7).toString() == "1")
+                comUpdateItemMarkUpTypeA.setSelectedIndex(0);
+            else
+                comUpdateItemMarkUpTypeA.setSelectedIndex(1);
+
+ 
+            
+            
+    }//GEN-LAST:event_tableStockViewMouseClicked
      
     private void validateItemSetUp1(JTextField jtf) {
         try {
             if (!tfAddItemCostA.getText().isEmpty() && !tfAddItemMarkUpA.getText().isEmpty()) {
 
                 if (comAddItemMarkUpTypeA.getSelectedIndex() == 1) {
-                    //if "�"
+                    //if "£"
                     double cost = Double.valueOf(tfAddItemCostA.getText());
                     double markUp = Double.valueOf(tfAddItemMarkUpA.getText());
                     double price = cost + markUp;
@@ -1164,7 +1241,6 @@ public class POS_Main extends javax.swing.JFrame {
 
             }
         } catch (NumberFormatException e) {
-            //this does not catch ArrayIndexOutOfBoundsException... fix this
             char ch;
             try {
                 ch = jtf.getText().toCharArray()[jtf.getText().length() - 1];
@@ -1181,6 +1257,81 @@ public class POS_Main extends javax.swing.JFrame {
         }
     }
 
+
+        private void ValUpdateitemSetUp2(JTextField jtf){
+        try {
+            if (!tfUpdateItemCostB.getText().isEmpty() && !tfUpdateItemSellingPriceB.getText().isEmpty()) {
+
+                //if "£"
+                double cost = Double.valueOf(tfUpdateItemCostB.getText());
+                double price = Double.valueOf(tfUpdateItemSellingPriceB.getText());
+                double markUp = 0;
+                if (price > cost) {
+                    markUp = price - cost;
+                } else if (cost > price) {
+                    markUp = cost - price;
+                }
+                lUpdateItemMarkUpB.setText(String.valueOf(markUp));
+
+            }
+        } catch (NumberFormatException e) {
+            char ch;
+            try {
+                ch = jtf.getText().toCharArray()[jtf.getText().length() - 1];
+            } catch (ArrayIndexOutOfBoundsException aioobe) {
+                return;
+            }
+            if (ch != '.' && ch != '-') {
+                try {
+                    tfUpdateItemCostA.setText(tfUpdateItemCostA.getText(0, tfUpdateItemCostA.getText().length() - 1));
+                } catch (BadLocationException ex) {
+                    //Logger.getLogger(POS_Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+    }
+
+    
+    private void ValUpdateitemSetUp1(JTextField jtf){
+        try {
+            if (!tfUpdateItemCostA.getText().isEmpty() && !tfUpdateItemMarkUpA.getText().isEmpty()) {
+
+                if (comUpdateItemMarkUpTypeA.getSelectedIndex() == 1) {
+                    //if "£"
+                    double cost = Double.valueOf(tfUpdateItemCostA.getText());
+                    double markUp = Double.valueOf(tfUpdateItemMarkUpA.getText());
+                    double price = cost + markUp;
+                    lUpdateItemSellingPrice.setText(String.valueOf(price));
+                } else {
+                    //if "%"
+                    double cost = Double.valueOf(tfUpdateItemCostA.getText());
+                    double markUp = Double.valueOf(tfUpdateItemMarkUpA.getText());
+                    double price = cost + (cost * (markUp / 100));
+                    lUpdateItemSellingPrice.setText(String.valueOf(price));
+                }                
+            }
+            else lUpdateItemSellingPrice.setText("- - -");
+                        
+        } catch (NumberFormatException e) {
+            char c;
+            try {
+                c = jtf.getText().toCharArray()[jtf.getText().length() - 1];
+            } catch (ArrayIndexOutOfBoundsException aioobe) {
+                return;
+            }
+            if (c != '.' && c != '-') {
+                try {
+                    jtf.setText(jtf.getText(0, jtf.getText().length() - 1));
+                } catch (BadLocationException ex) {
+                    //Logger.getLogger(POS_Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+
+    }
+    
     /**
      * @param args the command line arguments
      */       
@@ -1235,12 +1386,12 @@ public static void main(String args[]) {
     private javax.swing.JButton bStockEdit;
     private javax.swing.JButton bStockReceipt;
     private javax.swing.JButton bStockSearch;
-    private javax.swing.JButton bUpdateItemBack1;
-    private javax.swing.JButton bUpdateItemSubmit1;
+    private javax.swing.JButton bUpdateItemBack;
+    private javax.swing.JButton bUpdateItemSubmit;
     private javax.swing.JComboBox<String> comAddItemMarkUpTypeA;
     private javax.swing.JComboBox<String> comAddItemSelecter;
-    private javax.swing.JComboBox<String> comUpdateItemMarkUpTypeA1;
-    private javax.swing.JComboBox<String> comUpdateItemSelecter1;
+    private javax.swing.JComboBox<String> comUpdateItemMarkUpTypeA;
+    private javax.swing.JComboBox<String> comUpdateItemSelecter;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1265,14 +1416,14 @@ public static void main(String args[]) {
     private javax.swing.JLabel lAddItemMarkUpB;
     private javax.swing.JLabel lAddItemNoInStock;
     private javax.swing.JLabel lAddItemSellingPrice;
-    private javax.swing.JLabel lUpdateItemCost1;
-    private javax.swing.JLabel lUpdateItemItemName1;
-    private javax.swing.JLabel lUpdateItemMarkUp1;
-    private javax.swing.JLabel lUpdateItemMarkUpB1;
-    private javax.swing.JLabel lUpdateItemNoInStock1;
-    private javax.swing.JLabel lUpdateItemSellingPrice1;
+    private javax.swing.JLabel lUpdateItemCost;
+    private javax.swing.JLabel lUpdateItemItemName;
+    private javax.swing.JLabel lUpdateItemMarkUp;
+    private javax.swing.JLabel lUpdateItemMarkUpB;
+    private javax.swing.JLabel lUpdateItemNoInStock;
+    private javax.swing.JLabel lUpdateItemSellingPrice;
     private javax.swing.JLayeredPane layeredPaneAddItemDetails;
-    private javax.swing.JLayeredPane layeredPaneUpdateItemDetails1;
+    private javax.swing.JLayeredPane layeredPaneUpdateItemDetails;
     private javax.swing.JPanel stock;
     private javax.swing.JTable tableStockView;
     private javax.swing.JTextField tfAddItemCostA;
@@ -1283,12 +1434,12 @@ public static void main(String args[]) {
     private javax.swing.JTextField tfAddItemRRP;
     private javax.swing.JTextField tfAddItemSellingPriceB;
     private javax.swing.JTextField tfStockSearch;
-    private javax.swing.JTextField tfUpdateItemCostA1;
-    private javax.swing.JTextField tfUpdateItemCostB1;
-    private javax.swing.JTextField tfUpdateItemItemName1;
-    private javax.swing.JTextField tfUpdateItemMarkUpA1;
-    private javax.swing.JTextField tfUpdateItemNoInStock1;
-    private javax.swing.JTextField tfUpdateItemRRP1;
-    private javax.swing.JTextField tfUpdateItemSellingPriceB1;
+    private javax.swing.JTextField tfUpdateItemCostA;
+    private javax.swing.JTextField tfUpdateItemCostB;
+    private javax.swing.JTextField tfUpdateItemItemName;
+    private javax.swing.JTextField tfUpdateItemMarkUpA;
+    private javax.swing.JTextField tfUpdateItemNoInStock;
+    private javax.swing.JTextField tfUpdateItemRRP;
+    private javax.swing.JTextField tfUpdateItemSellingPriceB;
     // End of variables declaration//GEN-END:variables
 }
