@@ -32,18 +32,18 @@ public class POS_Main extends javax.swing.JFrame {
     private static final String pWord = "DeadFox64!";
     private static final String dbConn = "jdbc:mysql://localhost:3306/mr_ios_pos"; 
     
-    Connection sqlConn = null;
-    PreparedStatement pst = null;
-    ResultSet rs = null;
-    int q, i, id, deleteItem;
-    DefaultTableModel dtm;
+    private String updateIDPlaceHolder = "";
+    
+    private Connection sqlConn = null;
+    private PreparedStatement pst = null;
+    private ResultSet rs = null;
+    private int q, i, id, deleteItem;
+    private DefaultTableModel dtm;
     
     
     public POS_Main() {        
         initComponents();        
-        updateDB();
-        initVars();
-        
+        updateDB();             
     }
     
     public  void updateDB(){
@@ -55,17 +55,18 @@ public class POS_Main extends javax.swing.JFrame {
             ResultSetMetaData stData = rs.getMetaData();
             q = stData.getColumnCount();
 
-            dtm = (DefaultTableModel)tableStockView.getModel();
-            tableStockView.setModel(dtm);
-            dtm.addColumn("Item ID");
-            dtm.addColumn("Item Name");
-            dtm.addColumn("No In Stock");
-            dtm.addColumn("Selling Price");
-            dtm.addColumn("Cost");
-            dtm.addColumn("Mark Up");
-            dtm.addColumn("Is Mark Up Percent");
-            dtm.addColumn("RRP");
-
+            if(this.dtm == null){
+                dtm = (DefaultTableModel) tableStockView.getModel();
+                tableStockView.setModel(dtm);
+                dtm.addColumn("Item ID");
+                dtm.addColumn("Item Name");
+                dtm.addColumn("No In Stock");
+                dtm.addColumn("Selling Price");
+                dtm.addColumn("Cost");
+                dtm.addColumn("Mark Up");
+                dtm.addColumn("Is Mark Up Percent");
+                dtm.addColumn("RRP");
+            }
             dtm.setRowCount(0);
             
             while(rs.next()){
@@ -816,13 +817,7 @@ public class POS_Main extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void initVars(){
-        arrayList = new ArrayList<StockItem>();
-       
-        
-    }
-    
+  
     private void bStockAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bStockAddActionPerformed
         jLayeredPane.removeAll();
         jLayeredPane.add(addItem);
@@ -845,7 +840,6 @@ public class POS_Main extends javax.swing.JFrame {
     }//GEN-LAST:event_comAddItemSelecterActionPerformed
 
     private void bAddItemSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddItemSubmitActionPerformed
-        // TODO add your handling code here:
 
         boolean ok = true;
         int addType = comAddItemSelecter.getSelectedIndex();
@@ -936,16 +930,12 @@ public class POS_Main extends javax.swing.JFrame {
         if (ok) {
 
             try {
-                int itemID = 1000 + 2;//tableStockView.getRowCount();
+                int itemID = 1000 + 2;
 
                 if (comAddItemSelecter.getSelectedIndex() == 0) {
 
                     boolean is_percent = (comAddItemMarkUpTypeA.getSelectedItem().toString() == "%");
 
-                    arrayList.add(new StockItem(itemID, tfAddItemItemName.getText(), Integer.valueOf(tfAddItemNoInStock.getText()),
-                            Double.valueOf(lAddItemSellingPrice.getText()), Double.valueOf(tfAddItemCostA.getText()),
-                            Double.valueOf(tfAddItemMarkUpA.getText()), is_percent,
-                            Double.valueOf(tfAddItemRRP.getText())));
 
                     dtm.addRow(new Object[]{
                         itemID,
@@ -1010,17 +1000,17 @@ public class POS_Main extends javax.swing.JFrame {
 
                 }
 
-                tfAddItemSellingPriceB.setText("- - -");
-                tfAddItemCostB.setText("");
-                lAddItemMarkUpB.setText("");
-                lAddItemSellingPrice.setText("- - -");
-                tfAddItemCostA.setText("");
-                tfAddItemMarkUpA.setText("");
-                comAddItemMarkUpTypeA.setSelectedIndex(0);
-                tfAddItemRRP.setText("");
-                tfAddItemItemName.setText("");
-                tfAddItemNoInStock.setText("");
-                tfAddItemRRP.setText("");
+                tfUpdateItemSellingPriceB.setText("- - -");
+                tfUpdateItemCostB.setText("");
+                lUpdateItemMarkUpB.setText("");
+                lUpdateItemSellingPrice.setText("- - -");
+                tfUpdateItemCostA.setText("");
+                tfUpdateItemMarkUpA.setText("");
+                comUpdateItemMarkUpTypeA.setSelectedIndex(0);
+                tfUpdateItemRRP.setText("");
+                tfUpdateItemItemName.setText("");
+                tfUpdateItemNoInStock.setText("");
+                tfUpdateItemRRP.setText("");
 
                 My.p("\nItem Added");
             } catch (ClassNotFoundException e1) {
@@ -1099,7 +1089,164 @@ public class POS_Main extends javax.swing.JFrame {
     }//GEN-LAST:event_bAddItemBackActionPerformed
 
     private void bUpdateItemSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateItemSubmitActionPerformed
-        // TODO add your handling code here:
+                boolean ok = true;
+        int addType = comUpdateItemSelecter.getSelectedIndex();
+        String message = "";
+        if (tfUpdateItemItemName.getText().isEmpty()) {
+            ok = false;
+            message += "- The name of the item must be given.\n";
+        }
+
+        if (tfUpdateItemNoInStock.getText().isEmpty()) {
+            ok = false;
+            message += "- The amount of items in stock must be given.\n";
+        } else {
+            try {
+                int test = Integer.valueOf(tfUpdateItemNoInStock.getText());
+            } catch (NumberFormatException e2) {
+                ok = false;
+                message += "- The amount of items in stock must be a number.\n";
+            }
+        }
+
+        switch (addType) {
+            case 0:
+                if (tfUpdateItemCostA.getText().isEmpty()) {
+                    ok = false;
+                    message += "- The cost of the item must be given.\n";
+                } else {
+                    try {
+                        double test = Double.valueOf(tfUpdateItemCostA.getText());
+                    } catch (NumberFormatException e2) {
+                        ok = false;
+                        message += "- The cost of the item must be a number.\n";
+                    }
+                }
+
+                if (tfUpdateItemMarkUpA.getText().isEmpty()) {
+                    ok = false;
+                    message += "- The Mark Up must be given.\n";
+                } else {
+                    try {
+                        double test = Double.valueOf(tfUpdateItemMarkUpA.getText());
+                    } catch (NumberFormatException e2) {
+                        ok = false;
+                        message += "- The Mark Up must be a number.\n";
+                    }
+
+                }
+                break;
+            case 1:
+                if (tfUpdateItemCostB.getText().isEmpty()) {
+                    ok = false;
+                    message += "- The cost of the item must be given.\n";
+                } else {
+                    try {
+                        double test = Double.valueOf(tfUpdateItemCostB.getText());
+                    } catch (NumberFormatException e2) {
+                        ok = false;
+                        message += "- The cost of the item must be a number.\n";
+                    }
+                }
+
+                if (tfUpdateItemSellingPriceB.getText().isEmpty()) {
+                    ok = false;
+                    message += "- The selling price of the item must be givin.\n";
+                } else {
+                    try {
+                        double test = Double.valueOf(tfUpdateItemCostB.getText());
+                    } catch (NumberFormatException e2) {
+                        ok = false;
+                        message += "- The selling price must be a number.\n";
+                    }
+                }
+                break;
+        }
+
+        if (tfUpdateItemRRP.getText().isEmpty()) {
+            ok = false;
+            message += "- The Recommended Retail Price (RRP) must be given.\n";
+        } else {
+            try {
+                double test = Double.valueOf(tfUpdateItemRRP.getText());
+            } catch (NumberFormatException e2) {
+                ok = false;
+                message += "- The Recommended Retail Price (RRP) must be a number.\n";
+            }
+        }
+
+        if (ok) {
+
+            try {
+                int itemID = 1000 + 2;
+
+                if (comUpdateItemSelecter.getSelectedIndex() == 0) {
+
+                    boolean is_percent = ("%".equals(comUpdateItemMarkUpTypeA.getSelectedItem().toString()));
+
+                    Class.forName("com.mysql.jdbc.Driver");
+                    sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
+                    pst = sqlConn.prepareStatement("update items set Item_Name = ?, No_In_Stock = ?, Selling_Price = ?, Cost = ?, markUp = ?, Is_markUp_Percent = ?, RRP = ? where ItemID = ?");
+                    int isPersent = 0;
+                    if (is_percent) {
+                        isPersent = 1;
+                    }
+                    pst.setString(1, tfUpdateItemItemName.getText());
+                    pst.setString(2, tfUpdateItemNoInStock.getText());
+                    pst.setString(3, lUpdateItemSellingPrice.getText());
+                    pst.setString(4, tfUpdateItemCostA.getText());
+                    pst.setString(5, tfUpdateItemMarkUpA.getText());
+                    pst.setString(6, String.valueOf(isPersent));
+                    pst.setString(7, tfUpdateItemRRP.getText());
+                    pst.setString(8, updateIDPlaceHolder);
+
+                    pst.executeUpdate();
+                    updateDB();
+
+                } else {           
+                    Class.forName("com.mysql.jdbc.Driver");
+                    sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
+                    pst = sqlConn.prepareStatement("update items set Item_Name = ?, No_In_Stock = ?, Selling_Price = ?, Cost = ?, markUp = ?, Is_markUp_Percent = ?, RRP = ? where ItemID = ?");
+                    pst.setString(1, updateIDPlaceHolder);
+                    pst.setString(2, tfUpdateItemItemName.getText());
+                    pst.setString(3, tfUpdateItemNoInStock.getText());
+                    pst.setString(4, lUpdateItemSellingPrice.getText());
+                    pst.setString(5, tfUpdateItemCostA.getText());
+                    pst.setString(6, tfUpdateItemMarkUpA.getText());
+                    pst.setString(7, "0");
+                    pst.setString(8, tfUpdateItemRRP.getText());
+
+                    pst.executeUpdate();
+                    updateDB();
+
+                }
+
+                tfUpdateItemSellingPriceB.setText("- - -");
+                tfUpdateItemCostB.setText("");
+                lUpdateItemMarkUpB.setText("");
+                lUpdateItemSellingPrice.setText("- - -");
+                tfUpdateItemCostA.setText("");
+                tfUpdateItemMarkUpA.setText("");
+                comUpdateItemMarkUpTypeA.setSelectedIndex(0);
+                tfUpdateItemRRP.setText("");
+                tfUpdateItemItemName.setText("");
+                tfUpdateItemNoInStock.setText("");
+                tfUpdateItemRRP.setText("");
+
+                My.p("\nItem Updated");
+            } catch (ClassNotFoundException e1) {
+                JOptionPane.showMessageDialog(null, e1);
+            } catch (SQLException e2) {
+                JOptionPane.showMessageDialog(null, e2);
+            }
+
+        }
+        else {
+            JFrame frame = new JFrame();
+            JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_bUpdateItemSubmitActionPerformed
 
     private void tfUpdateItemCostAKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfUpdateItemCostAKeyReleased
@@ -1164,26 +1311,24 @@ public class POS_Main extends javax.swing.JFrame {
         jLayeredPane.revalidate();    }//GEN-LAST:event_bStockEditActionPerformed
 
     private void tableStockViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableStockViewMouseClicked
-        // this dose not work correctly, fix it
-            DefaultTableModel dtm = (DefaultTableModel)tableStockView.getModel();
+            //DefaultTableModel dtm = (DefaultTableModel)tableStockView.getModel();
             int selsectedRow = tableStockView.getSelectedRow();
             
-            tfUpdateItemItemName.setText(tableStockView.getValueAt(selsectedRow, 2).toString());
-            tfUpdateItemNoInStock.setText(tableStockView.getValueAt(selsectedRow, 3).toString());
+            updateIDPlaceHolder = tableStockView.getValueAt(selsectedRow, 0).toString();
             
-            tfUpdateItemCostA.setText(tableStockView.getValueAt(selsectedRow, 5).toString());
-            lUpdateItemSellingPrice.setText(tableStockView.getValueAt(selsectedRow, 4).toString());
-            tfUpdateItemMarkUpA.setText(tableStockView.getValueAt(selsectedRow, 6).toString());
-            tfUpdateItemRRP.setText(tableStockView.getValueAt(selsectedRow, 8).toString());
+            tfUpdateItemItemName.setText(tableStockView.getValueAt(selsectedRow, 1).toString());
+            tfUpdateItemNoInStock.setText(tableStockView.getValueAt(selsectedRow, 2).toString());
+            
+            tfUpdateItemCostA.setText(tableStockView.getValueAt(selsectedRow, 4).toString());
+            lUpdateItemSellingPrice.setText(tableStockView.getValueAt(selsectedRow, 3).toString());
+            tfUpdateItemMarkUpA.setText(tableStockView.getValueAt(selsectedRow, 5).toString());
+            tfUpdateItemRRP.setText(tableStockView.getValueAt(selsectedRow, 7).toString());
 
-            if(tableStockView.getValueAt(selsectedRow, 7).toString() == "1")
-                comUpdateItemMarkUpTypeA.setSelectedIndex(0);
-            else
+            if("1".equals(tableStockView.getValueAt(selsectedRow, 6).toString()))
                 comUpdateItemMarkUpTypeA.setSelectedIndex(1);
+            else
+                comUpdateItemMarkUpTypeA.setSelectedIndex(0);
 
- 
-            
-            
     }//GEN-LAST:event_tableStockViewMouseClicked
      
     private void validateItemSetUp1(JTextField jtf) {
