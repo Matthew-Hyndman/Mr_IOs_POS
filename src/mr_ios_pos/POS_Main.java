@@ -181,7 +181,6 @@ public class POS_Main extends javax.swing.JFrame {
 
             }
         ));
-        tableStockView.setColumnSelectionAllowed(false);
         tableStockView.setName(""); // NOI18N
         tableStockView.setShowGrid(true);
         tableStockView.setShowVerticalLines(false);
@@ -216,6 +215,11 @@ public class POS_Main extends javax.swing.JFrame {
 
         bStockDelete.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         bStockDelete.setText("Delete");
+        bStockDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bStockDeleteActionPerformed(evt);
+            }
+        });
 
         bStockDetails.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         bStockDetails.setText("Details");
@@ -930,7 +934,7 @@ public class POS_Main extends javax.swing.JFrame {
         if (ok) {
 
             try {
-                int itemID = 1000 + 2;
+                int itemID = 1000 + tableStockView.getRowCount();
 
                 if (comAddItemSelecter.getSelectedIndex() == 0) {
 
@@ -1330,6 +1334,34 @@ public class POS_Main extends javax.swing.JFrame {
                 comUpdateItemMarkUpTypeA.setSelectedIndex(0);
 
     }//GEN-LAST:event_tableStockViewMouseClicked
+
+    private void bStockDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bStockDeleteActionPerformed
+        int selectedRow = tableStockView.getSelectedRow();
+        if(selectedRow == -1)
+            JOptionPane.showMessageDialog(null, "You must select a row in the table to delete.");
+        else{
+            int itemID = Integer.parseInt(tableStockView.getValueAt(selectedRow, 0).toString());
+            int deleteItem = JOptionPane.showConfirmDialog(null, "Are you sure you wish to delete" + itemID + "?", "Warning", JOptionPane.YES_NO_OPTION);
+            if(deleteItem == JOptionPane.YES_OPTION){
+                try{
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
+                pst = sqlConn.prepareStatement("DELETE FROM mr_ios_pos.items WHERE ItemID = ?;");
+                
+                pst.setInt(1, itemID);
+                pst.executeUpdate();
+                updateDB();
+                
+                } catch(SQLException e){
+                    JOptionPane.showMessageDialog(null, e.toString());
+                } catch(ClassNotFoundException e2){                                
+                    JOptionPane.showMessageDialog(null, e2.toString());
+                }
+            }
+            else
+                return;
+        }
+    }//GEN-LAST:event_bStockDeleteActionPerformed
      
     private void validateItemSetUp1(JTextField jtf) {
         try {
