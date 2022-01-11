@@ -1,5 +1,8 @@
 package mr_ios_pos;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -37,7 +40,8 @@ public class POS_Main extends javax.swing.JFrame {
     private Connection sqlConn = null;
     private PreparedStatement pst = null;
     private ResultSet rs = null;
-    private int q, i, id, deleteItem;
+    private int q, i, id, deleteItem, percentVAT;
+    private boolean allowVAT;
     private DefaultTableModel dtm;
     
     
@@ -66,6 +70,7 @@ public class POS_Main extends javax.swing.JFrame {
                 dtm.addColumn("Mark Up");
                 dtm.addColumn("Is Mark Up Percent");
                 dtm.addColumn("RRP");
+                dtm.addColumn("Inc VAT");
             }
             dtm.setRowCount(0);
             
@@ -79,8 +84,19 @@ public class POS_Main extends javax.swing.JFrame {
                    colDat.add(rs.getString("Selling_Price"));
                    colDat.add(rs.getString("Cost"));
                    colDat.add(rs.getString("markUp"));
-                   colDat.add(rs.getString("Is_markUp_Percent"));
+                   
+                   if(rs.getString("Is_markUp_Percent").equals("1"))
+                       colDat.add("Yes");
+                   else
+                       colDat.add("No");
+                   
                    colDat.add(rs.getString("RRP"));
+                                     
+                   if(rs.getString("Inc_VAT").equals("1"))
+                       colDat.add("Yes");
+                   else
+                       colDat.add("No");
+   
                 }
                 dtm.addRow(colDat);
             }
@@ -93,6 +109,15 @@ public class POS_Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Settings = new javax.swing.JFrame();
+        SettingsNav = new javax.swing.JTabbedPane();
+        Display = new javax.swing.JPanel();
+        SystemVariables = new javax.swing.JPanel();
+        SysVarApply = new javax.swing.JButton();
+        cbSettingVATLicensed = new javax.swing.JCheckBox();
+        tfVAT = new javax.swing.JTextPane();
+        tfVATName = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jLayeredPane = new javax.swing.JLayeredPane();
         stock = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -130,6 +155,7 @@ public class POS_Main extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         tfAddItemRRP = new javax.swing.JTextField();
         bAddItemBack = new javax.swing.JButton();
+        cbAddItemIncVat = new javax.swing.JCheckBox();
         UpdateItem = new javax.swing.JPanel();
         bUpdateItemSubmit = new javax.swing.JButton();
         lUpdateItemItemName = new javax.swing.JLabel();
@@ -156,12 +182,109 @@ public class POS_Main extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         tfUpdateItemRRP = new javax.swing.JTextField();
         bUpdateItemBack = new javax.swing.JButton();
+        cbUpdateItemIncVat = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItemFileDelete = new javax.swing.JMenuItem();
-        jMenuItemClearFile = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        Edit = new javax.swing.JMenu();
         jMenuItemSettings = new javax.swing.JMenuItem();
+
+        Settings.setPreferredSize(new java.awt.Dimension(500, 500));
+
+        SettingsNav.setToolTipText("");
+        SettingsNav.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        javax.swing.GroupLayout DisplayLayout = new javax.swing.GroupLayout(Display);
+        Display.setLayout(DisplayLayout);
+        DisplayLayout.setHorizontalGroup(
+            DisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 388, Short.MAX_VALUE)
+        );
+        DisplayLayout.setVerticalGroup(
+            DisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 416, Short.MAX_VALUE)
+        );
+
+        SettingsNav.addTab("Display", Display);
+
+        SysVarApply.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        SysVarApply.setText("Apply");
+        SysVarApply.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SysVarApplyActionPerformed(evt);
+            }
+        });
+
+        cbSettingVATLicensed.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cbSettingVATLicensed.setSelected(true);
+        cbSettingVATLicensed.setText("VAT Licensed");
+
+        tfVAT.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tfVAT.setText("0");
+
+        tfVATName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tfVATName.setText("VAT:");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("%");
+
+        javax.swing.GroupLayout SystemVariablesLayout = new javax.swing.GroupLayout(SystemVariables);
+        SystemVariables.setLayout(SystemVariablesLayout);
+        SystemVariablesLayout.setHorizontalGroup(
+            SystemVariablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SystemVariablesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(SystemVariablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(SystemVariablesLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(SysVarApply))
+                    .addGroup(SystemVariablesLayout.createSequentialGroup()
+                        .addGroup(SystemVariablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cbSettingVATLicensed, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(SystemVariablesLayout.createSequentialGroup()
+                                .addComponent(tfVATName)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tfVAT, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
+                        .addGap(0, 220, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        SystemVariablesLayout.setVerticalGroup(
+            SystemVariablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SystemVariablesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cbSettingVATLicensed)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(SystemVariablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(SystemVariablesLayout.createSequentialGroup()
+                        .addGroup(SystemVariablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfVATName)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 313, Short.MAX_VALUE)
+                        .addComponent(SysVarApply))
+                    .addGroup(SystemVariablesLayout.createSequentialGroup()
+                        .addComponent(tfVAT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        SettingsNav.addTab("SysVar", SystemVariables);
+
+        javax.swing.GroupLayout SettingsLayout = new javax.swing.GroupLayout(Settings.getContentPane());
+        Settings.getContentPane().setLayout(SettingsLayout);
+        SettingsLayout.setHorizontalGroup(
+            SettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SettingsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(SettingsNav)
+                .addContainerGap())
+        );
+        SettingsLayout.setVerticalGroup(
+            SettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SettingsLayout.createSequentialGroup()
+                .addContainerGap(44, Short.MAX_VALUE)
+                .addComponent(SettingsNav, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mr. IO's POS");
@@ -467,6 +590,9 @@ public class POS_Main extends javax.swing.JFrame {
             }
         });
 
+        cbAddItemIncVat.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cbAddItemIncVat.setText("Inc VAT");
+
         javax.swing.GroupLayout addItemLayout = new javax.swing.GroupLayout(addItem);
         addItem.setLayout(addItemLayout);
         addItemLayout.setHorizontalGroup(
@@ -493,7 +619,10 @@ public class POS_Main extends javax.swing.JFrame {
                                     .addComponent(tfAddItemNoInStock)))
                             .addGroup(addItemLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tfAddItemItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(tfAddItemItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, addItemLayout.createSequentialGroup()
+                        .addComponent(cbAddItemIncVat)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(bAddItemSubmit)
                 .addContainerGap())
@@ -513,7 +642,9 @@ public class POS_Main extends javax.swing.JFrame {
                             .addComponent(lAddItemNoInStock)
                             .addComponent(tfAddItemNoInStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
-                        .addComponent(comAddItemSelecter, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(addItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comAddItemSelecter, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbAddItemIncVat))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layeredPaneAddItemDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -722,6 +853,9 @@ public class POS_Main extends javax.swing.JFrame {
             }
         });
 
+        cbUpdateItemIncVat.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cbUpdateItemIncVat.setText("Inc VAT");
+
         javax.swing.GroupLayout UpdateItemLayout = new javax.swing.GroupLayout(UpdateItem);
         UpdateItem.setLayout(UpdateItemLayout);
         UpdateItemLayout.setHorizontalGroup(
@@ -739,7 +873,8 @@ public class POS_Main extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, UpdateItemLayout.createSequentialGroup()
                         .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lUpdateItemItemName)
-                            .addComponent(lUpdateItemNoInStock))
+                            .addComponent(lUpdateItemNoInStock)
+                            .addComponent(cbUpdateItemIncVat, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(UpdateItemLayout.createSequentialGroup()
                                 .addGap(25, 25, 25)
@@ -768,7 +903,9 @@ public class POS_Main extends javax.swing.JFrame {
                             .addComponent(lUpdateItemNoInStock)
                             .addComponent(tfUpdateItemNoInStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
-                        .addComponent(comUpdateItemSelecter, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comUpdateItemSelecter, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbUpdateItemIncVat))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layeredPaneUpdateItemDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -783,22 +920,17 @@ public class POS_Main extends javax.swing.JFrame {
 
         jLayeredPane.add(UpdateItem, "card3");
 
-        jMenu1.setText("File");
-
-        jMenuItemFileDelete.setText("Delete File");
-        jMenu1.add(jMenuItemFileDelete);
-
-        jMenuItemClearFile.setText("Clear File");
-        jMenu1.add(jMenuItemClearFile);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
+        Edit.setText("Edit");
 
         jMenuItemSettings.setText("Settings");
-        jMenu2.add(jMenuItemSettings);
+        jMenuItemSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSettingsActionPerformed(evt);
+            }
+        });
+        Edit.add(jMenuItemSettings);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(Edit);
 
         setJMenuBar(jMenuBar1);
 
@@ -808,14 +940,14 @@ public class POS_Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLayeredPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLayeredPane)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLayeredPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLayeredPane)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -954,7 +1086,7 @@ public class POS_Main extends javax.swing.JFrame {
 
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
-                    pst = sqlConn.prepareStatement("insert into mr_ios_pos.items (ItemID, Item_Name, No_In_Stock, Selling_Price, Cost, markUp, Is_markUp_Percent, RRP) value(?,?,?,?,?,?,?,?)");
+                    pst = sqlConn.prepareStatement("insert into mr_ios_pos.items (ItemID, Item_Name, No_In_Stock, Selling_Price, Cost, markUp, Is_markUp_Percent, RRP, Inc_VAT) value(?,?,?,?,?,?,?,?,?)");
                     int isPersent = 0;
                     if (is_percent) {
                         isPersent = 1;
@@ -967,6 +1099,7 @@ public class POS_Main extends javax.swing.JFrame {
                     pst.setString(6, tfAddItemMarkUpA.getText());
                     pst.setString(7, String.valueOf(isPersent));
                     pst.setString(8, tfAddItemRRP.getText());
+                    pst.setString(9, String.valueOf(cbAddItemIncVat.isSelected()));
 
                     pst.executeUpdate();
                     updateDB();
@@ -984,12 +1117,13 @@ public class POS_Main extends javax.swing.JFrame {
                         Double.valueOf(tfAddItemCostB.getText()),
                         Double.valueOf(lAddItemMarkUpB.getText()),
                         false,
-                        Double.valueOf(tfAddItemRRP.getText())
+                        Double.valueOf(tfAddItemRRP.getText()),
+                        cbAddItemIncVat.isSelected()
                     });
 
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
-                    pst = sqlConn.prepareStatement("insert into mr_ios_pos.items (ItemID, Item_Name, No_In_Stock, Selling_Price, Cost, markUp, Is_markUp_Percent, RRP) value(?,?,?,?,?,?,?,?)");
+                    pst = sqlConn.prepareStatement("insert into mr_ios_pos.items (ItemID, Item_Name, No_In_Stock, Selling_Price, Cost, markUp, Is_markUp_Percent, RRP, Inc_VAT) value(?,?,?,?,?,?,?,?,?)");
                     pst.setString(1, String.valueOf(itemID));
                     pst.setString(2, tfAddItemItemName.getText());
                     pst.setString(3, tfAddItemNoInStock.getText());
@@ -998,6 +1132,8 @@ public class POS_Main extends javax.swing.JFrame {
                     pst.setString(6, tfAddItemMarkUpA.getText());
                     pst.setString(7, "0");
                     pst.setString(8, tfAddItemRRP.getText());
+                    pst.setString(9, String.valueOf(cbAddItemIncVat.isSelected()));
+
 
                     pst.executeUpdate();
                     updateDB();
@@ -1181,8 +1317,7 @@ public class POS_Main extends javax.swing.JFrame {
 
         if (ok) {
 
-            try {
-                int itemID = 1000 + 2;
+            try {               
 
                 if (comUpdateItemSelecter.getSelectedIndex() == 0) {
 
@@ -1190,7 +1325,7 @@ public class POS_Main extends javax.swing.JFrame {
 
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
-                    pst = sqlConn.prepareStatement("update items set Item_Name = ?, No_In_Stock = ?, Selling_Price = ?, Cost = ?, markUp = ?, Is_markUp_Percent = ?, RRP = ? where ItemID = ?");
+                    pst = sqlConn.prepareStatement("update items set Item_Name = ?, No_In_Stock = ?, Selling_Price = ?, Cost = ?, markUp = ?, Is_markUp_Percent = ?, RRP = ?, Inc_VAT = ? where ItemID = ?");
                     int isPersent = 0;
                     if (is_percent) {
                         isPersent = 1;
@@ -1202,7 +1337,8 @@ public class POS_Main extends javax.swing.JFrame {
                     pst.setString(5, tfUpdateItemMarkUpA.getText());
                     pst.setString(6, String.valueOf(isPersent));
                     pst.setString(7, tfUpdateItemRRP.getText());
-                    pst.setString(8, updateIDPlaceHolder);
+                    pst.setString(8, String.valueOf(cbUpdateItemIncVat.isSelected()));
+                    pst.setString(9, updateIDPlaceHolder);
 
                     pst.executeUpdate();
                     updateDB();
@@ -1210,15 +1346,17 @@ public class POS_Main extends javax.swing.JFrame {
                 } else {           
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
-                    pst = sqlConn.prepareStatement("update items set Item_Name = ?, No_In_Stock = ?, Selling_Price = ?, Cost = ?, markUp = ?, Is_markUp_Percent = ?, RRP = ? where ItemID = ?");
-                    pst.setString(1, updateIDPlaceHolder);
-                    pst.setString(2, tfUpdateItemItemName.getText());
-                    pst.setString(3, tfUpdateItemNoInStock.getText());
-                    pst.setString(4, lUpdateItemSellingPrice.getText());
-                    pst.setString(5, tfUpdateItemCostA.getText());
-                    pst.setString(6, tfUpdateItemMarkUpA.getText());
-                    pst.setString(7, "0");
-                    pst.setString(8, tfUpdateItemRRP.getText());
+                    pst = sqlConn.prepareStatement("update items set Item_Name = ?, No_In_Stock = ?, Selling_Price = ?, Cost = ?, markUp = ?, Is_markUp_Percent = ?, RRP = ?, Inc_VAT = ? where ItemID = ?");
+                    pst.setString(1, tfUpdateItemItemName.getText());
+                    pst.setString(2, tfUpdateItemNoInStock.getText());
+                    pst.setString(3, lUpdateItemSellingPrice.getText());
+                    pst.setString(4, tfUpdateItemCostA.getText());
+                    pst.setString(5, tfUpdateItemMarkUpA.getText());
+                    pst.setString(6, "0");
+                    pst.setString(7, tfUpdateItemRRP.getText());
+                    pst.setString(8, String.valueOf(cbUpdateItemIncVat.isSelected()));
+                    pst.setString(9, updateIDPlaceHolder);
+
 
                     pst.executeUpdate();
                     updateDB();
@@ -1362,6 +1500,44 @@ public class POS_Main extends javax.swing.JFrame {
                 return;
         }
     }//GEN-LAST:event_bStockDeleteActionPerformed
+
+    private void jMenuItemSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSettingsActionPerformed
+        // TODO add your handling code here:---------------------------------------------------------------------------------------------------------------------
+        Settings = new JFrame();
+        Settings.setSize(500, 500);
+        Settings.setVisible(true);
+        Settings.add(SettingsNav);
+        SettingsNav.setVisible(true);
+    }//GEN-LAST:event_jMenuItemSettingsActionPerformed
+
+    private void SysVarApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SysVarApplyActionPerformed
+        try {
+            String varData = "";
+            File file = new File("SysVar.txt");
+
+            if (!tfVAT.getText().isEmpty() && cbSettingVATLicensed.isSelected()) {
+                allowVAT = true;
+                varData += "1|" + tfVAT.getText() + ";";
+                 
+            }
+            else if (cbSettingVATLicensed.isSelected()){
+                JOptionPane.showMessageDialog(null, "Please enter a persent in the VAT Text bar");
+            }
+            else {
+                    allowVAT = false;
+                    varData += "0|-";
+
+                }
+                if (file.exists()) {
+                    FileWriter writer = new FileWriter("SysVar.txt");
+                    writer.write(varData);
+                    writer.close();
+                }
+            
+        } catch (IOException e) {
+
+        }
+    }//GEN-LAST:event_SysVarApplyActionPerformed
      
     private void validateItemSetUp1(JTextField jtf) {
         try {
@@ -1553,6 +1729,12 @@ public static void main(String args[]) {
     private javax.swing.JPanel CostAndMarkUp1;
     private javax.swing.JPanel CostAndSellingPrice;
     private javax.swing.JPanel CostAndSellingPrice1;
+    private javax.swing.JPanel Display;
+    private javax.swing.JMenu Edit;
+    private javax.swing.JFrame Settings;
+    private javax.swing.JTabbedPane SettingsNav;
+    private javax.swing.JButton SysVarApply;
+    private javax.swing.JPanel SystemVariables;
     private javax.swing.JPanel UpdateItem;
     private javax.swing.JPanel addItem;
     private javax.swing.JButton bAddItemBack;
@@ -1565,10 +1747,14 @@ public static void main(String args[]) {
     private javax.swing.JButton bStockSearch;
     private javax.swing.JButton bUpdateItemBack;
     private javax.swing.JButton bUpdateItemSubmit;
+    private javax.swing.JCheckBox cbAddItemIncVat;
+    private javax.swing.JCheckBox cbSettingVATLicensed;
+    private javax.swing.JCheckBox cbUpdateItemIncVat;
     private javax.swing.JComboBox<String> comAddItemMarkUpTypeA;
     private javax.swing.JComboBox<String> comAddItemSelecter;
     private javax.swing.JComboBox<String> comUpdateItemMarkUpTypeA;
     private javax.swing.JComboBox<String> comUpdateItemSelecter;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1580,11 +1766,7 @@ public static void main(String args[]) {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItemClearFile;
-    private javax.swing.JMenuItem jMenuItemFileDelete;
     private javax.swing.JMenuItem jMenuItemSettings;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lAddItemCost;
@@ -1618,5 +1800,7 @@ public static void main(String args[]) {
     private javax.swing.JTextField tfUpdateItemNoInStock;
     private javax.swing.JTextField tfUpdateItemRRP;
     private javax.swing.JTextField tfUpdateItemSellingPriceB;
+    private javax.swing.JTextPane tfVAT;
+    private javax.swing.JLabel tfVATName;
     // End of variables declaration//GEN-END:variables
 }
