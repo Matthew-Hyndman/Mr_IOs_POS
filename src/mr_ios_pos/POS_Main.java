@@ -67,8 +67,9 @@ public class POS_Main extends javax.swing.JFrame {
                 dtm.addColumn("No In Stock");
                 dtm.addColumn("Selling Price");
                 dtm.addColumn("Cost");
+                dtm.addColumn("VAT_Input");
                 dtm.addColumn("Mark Up");
-                dtm.addColumn("Is Mark Up Percent");
+                dtm.addColumn("Mark Up Type");
                 dtm.addColumn("RRP");
                 dtm.addColumn("Inc VAT");
             }
@@ -83,12 +84,13 @@ public class POS_Main extends javax.swing.JFrame {
                    colDat.add(rs.getString("No_In_Stock"));
                    colDat.add(rs.getString("Selling_Price"));
                    colDat.add(rs.getString("Cost"));
+                   colDat.add(rs.getString("VAT_Input"));
                    colDat.add(rs.getString("markUp"));
                    
                    if(rs.getString("Is_markUp_Percent").equals("1"))
-                       colDat.add("Yes");
+                       colDat.add("%");
                    else
-                       colDat.add("No");
+                       colDat.add("£");
                    
                    colDat.add(rs.getString("RRP"));
                                      
@@ -144,6 +146,8 @@ public class POS_Main extends javax.swing.JFrame {
         comAddItemMarkUpTypeA = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         lAddItemSellingPrice = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        tfAddItemVATInputA = new javax.swing.JTextField();
         CostAndSellingPrice = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         tfAddItemCostB = new javax.swing.JTextField();
@@ -151,6 +155,8 @@ public class POS_Main extends javax.swing.JFrame {
         tfAddItemSellingPriceB = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         lAddItemMarkUpB = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        tfAddItemVATInputB = new javax.swing.JTextField();
         comAddItemSelecter = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         tfAddItemRRP = new javax.swing.JTextField();
@@ -171,6 +177,8 @@ public class POS_Main extends javax.swing.JFrame {
         comUpdateItemMarkUpTypeA = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         lUpdateItemSellingPrice = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         CostAndSellingPrice1 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         tfUpdateItemCostB = new javax.swing.JTextField();
@@ -178,6 +186,8 @@ public class POS_Main extends javax.swing.JFrame {
         tfUpdateItemSellingPriceB = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         lUpdateItemMarkUpB = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
         comUpdateItemSelecter = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
         tfUpdateItemRRP = new javax.swing.JTextField();
@@ -186,8 +196,6 @@ public class POS_Main extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         Edit = new javax.swing.JMenu();
         jMenuItemSettings = new javax.swing.JMenuItem();
-
-        Settings.setPreferredSize(new java.awt.Dimension(500, 500));
 
         SettingsNav.setToolTipText("");
         SettingsNav.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -371,7 +379,7 @@ public class POS_Main extends javax.swing.JFrame {
                         .addComponent(tfStockSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(bStockSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
                         .addComponent(bStockReceipt)))
                 .addContainerGap())
         );
@@ -451,37 +459,53 @@ public class POS_Main extends javax.swing.JFrame {
         lAddItemSellingPrice.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lAddItemSellingPrice.setText("- - -");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setText("VAT Input £:");
+
+        tfAddItemVATInputA.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout CostAndMarkUpLayout = new javax.swing.GroupLayout(CostAndMarkUp);
         CostAndMarkUp.setLayout(CostAndMarkUpLayout);
         CostAndMarkUpLayout.setHorizontalGroup(
             CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CostAndMarkUpLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CostAndMarkUpLayout.createSequentialGroup()
                         .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lAddItemCost)
                             .addComponent(lAddItemMarkUp))
                         .addGap(18, 18, 18)
                         .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CostAndMarkUpLayout.createSequentialGroup()
-                                .addComponent(tfAddItemMarkUpA)
+                            .addComponent(tfAddItemMarkUpA, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                            .addComponent(tfAddItemCostA))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(CostAndMarkUpLayout.createSequentialGroup()
+                                .addComponent(comAddItemMarkUpTypeA, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(CostAndMarkUpLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comAddItemMarkUpTypeA, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(tfAddItemCostA, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(tfAddItemVATInputA, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))))
                     .addGroup(CostAndMarkUpLayout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lAddItemSellingPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(115, Short.MAX_VALUE))
+                        .addComponent(lAddItemSellingPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         CostAndMarkUpLayout.setVerticalGroup(
             CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CostAndMarkUpLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lAddItemCost)
-                    .addComponent(tfAddItemCostA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lAddItemCost)
+                        .addComponent(tfAddItemCostA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addGroup(CostAndMarkUpLayout.createSequentialGroup()
+                        .addComponent(tfAddItemVATInputA)
+                        .addGap(2, 2, 2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lAddItemMarkUp)
@@ -497,7 +521,7 @@ public class POS_Main extends javax.swing.JFrame {
 
         layeredPaneAddItemDetails.add(CostAndMarkUp, "card2");
 
-        CostAndSellingPrice.setPreferredSize(new java.awt.Dimension(354, 126));
+        CostAndSellingPrice.setPreferredSize(new java.awt.Dimension(547, 126));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setText("Cost £:");
@@ -525,6 +549,11 @@ public class POS_Main extends javax.swing.JFrame {
         lAddItemMarkUpB.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lAddItemMarkUpB.setText("- - -");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("Input VAT £:");
+
+        tfAddItemVATInputB.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout CostAndSellingPriceLayout = new javax.swing.GroupLayout(CostAndSellingPrice);
         CostAndSellingPrice.setLayout(CostAndSellingPriceLayout);
         CostAndSellingPriceLayout.setHorizontalGroup(
@@ -542,20 +571,32 @@ public class POS_Main extends javax.swing.JFrame {
                                 .addGap(44, 44, 44)))
                         .addGroup(CostAndSellingPriceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lAddItemMarkUpB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tfAddItemSellingPriceB)))
+                            .addGroup(CostAndSellingPriceLayout.createSequentialGroup()
+                                .addComponent(tfAddItemSellingPriceB, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(23, 23, 23))
                     .addGroup(CostAndSellingPriceLayout.createSequentialGroup()
                         .addComponent(jLabel7)
-                        .addGap(74, 74, 74)
-                        .addComponent(tfAddItemCostB, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(23, 23, 23))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tfAddItemCostB, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfAddItemVATInputB, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         CostAndSellingPriceLayout.setVerticalGroup(
             CostAndSellingPriceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CostAndSellingPriceLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CostAndSellingPriceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(tfAddItemCostB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(CostAndSellingPriceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(CostAndSellingPriceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7)
+                        .addComponent(tfAddItemCostB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3))
+                    .addGroup(CostAndSellingPriceLayout.createSequentialGroup()
+                        .addComponent(tfAddItemVATInputB)
+                        .addGap(2, 2, 2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndSellingPriceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -591,7 +632,7 @@ public class POS_Main extends javax.swing.JFrame {
         });
 
         cbAddItemIncVat.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        cbAddItemIncVat.setText("Inc VAT");
+        cbAddItemIncVat.setText("Inc Output VAT");
 
         javax.swing.GroupLayout addItemLayout = new javax.swing.GroupLayout(addItem);
         addItem.setLayout(addItemLayout);
@@ -611,18 +652,14 @@ public class POS_Main extends javax.swing.JFrame {
                         .addGroup(addItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lAddItemItemName)
                             .addComponent(lAddItemNoInStock))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(addItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(addItemLayout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addGroup(addItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comAddItemSelecter, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tfAddItemNoInStock)))
-                            .addGroup(addItemLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tfAddItemItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, addItemLayout.createSequentialGroup()
+                            .addComponent(tfAddItemItemName)
+                            .addComponent(tfAddItemNoInStock)))
+                    .addGroup(addItemLayout.createSequentialGroup()
                         .addComponent(cbAddItemIncVat)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(comAddItemSelecter, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(bAddItemSubmit)
                 .addContainerGap())
@@ -642,13 +679,13 @@ public class POS_Main extends javax.swing.JFrame {
                             .addComponent(lAddItemNoInStock)
                             .addComponent(tfAddItemNoInStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
-                        .addGroup(addItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(addItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(comAddItemSelecter, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbAddItemIncVat))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layeredPaneAddItemDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(addItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(addItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tfAddItemRRP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(addItemLayout.createSequentialGroup()
@@ -714,29 +751,40 @@ public class POS_Main extends javax.swing.JFrame {
         lUpdateItemSellingPrice.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lUpdateItemSellingPrice.setText("- - -");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("VAT Input £:");
+
+        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout CostAndMarkUp1Layout = new javax.swing.GroupLayout(CostAndMarkUp1);
         CostAndMarkUp1.setLayout(CostAndMarkUp1Layout);
         CostAndMarkUp1Layout.setHorizontalGroup(
             CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CostAndMarkUp1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CostAndMarkUp1Layout.createSequentialGroup()
                         .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lUpdateItemCost)
                             .addComponent(lUpdateItemMarkUp))
                         .addGap(18, 18, 18)
                         .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CostAndMarkUp1Layout.createSequentialGroup()
-                                .addComponent(tfUpdateItemMarkUpA)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comUpdateItemMarkUpTypeA, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(tfUpdateItemCostA, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(tfUpdateItemCostA, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                            .addComponent(tfUpdateItemMarkUpA))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(CostAndMarkUp1Layout.createSequentialGroup()
+                                .addComponent(comUpdateItemMarkUpTypeA, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(CostAndMarkUp1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))))
                     .addGroup(CostAndMarkUp1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lUpdateItemSellingPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(115, Short.MAX_VALUE))
+                        .addComponent(lUpdateItemSellingPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         CostAndMarkUp1Layout.setVerticalGroup(
             CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -744,7 +792,9 @@ public class POS_Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lUpdateItemCost)
-                    .addComponent(tfUpdateItemCostA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfUpdateItemCostA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextField1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lUpdateItemMarkUp)
@@ -760,7 +810,7 @@ public class POS_Main extends javax.swing.JFrame {
 
         layeredPaneUpdateItemDetails.add(CostAndMarkUp1, "card2");
 
-        CostAndSellingPrice1.setPreferredSize(new java.awt.Dimension(354, 126));
+        CostAndSellingPrice1.setPreferredSize(new java.awt.Dimension(547, 126));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel10.setText("Cost £:");
@@ -788,6 +838,11 @@ public class POS_Main extends javax.swing.JFrame {
         lUpdateItemMarkUpB.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lUpdateItemMarkUpB.setText("- - -");
 
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel15.setText("VAT Input £:");
+
+        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout CostAndSellingPrice1Layout = new javax.swing.GroupLayout(CostAndSellingPrice1);
         CostAndSellingPrice1.setLayout(CostAndSellingPrice1Layout);
         CostAndSellingPrice1Layout.setHorizontalGroup(
@@ -796,29 +851,38 @@ public class POS_Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(CostAndSellingPrice1Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addGap(44, 44, 44)
+                        .addComponent(lUpdateItemMarkUpB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(CostAndSellingPrice1Layout.createSequentialGroup()
                         .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CostAndSellingPrice1Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(18, 18, 18))
+                                .addComponent(jLabel10)
+                                .addGap(74, 74, 74))
                             .addGroup(CostAndSellingPrice1Layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addGap(44, 44, 44)))
-                        .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lUpdateItemMarkUpB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tfUpdateItemSellingPriceB)))
-                    .addGroup(CostAndSellingPrice1Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(74, 74, 74)
-                        .addComponent(tfUpdateItemCostB, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(23, 23, 23))
+                                .addComponent(jLabel12)
+                                .addGap(16, 16, 16)))
+                        .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfUpdateItemSellingPriceB, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                            .addComponent(tfUpdateItemCostB))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         CostAndSellingPrice1Layout.setVerticalGroup(
             CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CostAndSellingPrice1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(tfUpdateItemCostB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel10)
+                        .addComponent(tfUpdateItemCostB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel15))
+                    .addGroup(CostAndSellingPrice1Layout.createSequentialGroup()
+                        .addComponent(jTextField2)
+                        .addGap(2, 2, 2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
@@ -854,7 +918,7 @@ public class POS_Main extends javax.swing.JFrame {
         });
 
         cbUpdateItemIncVat.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        cbUpdateItemIncVat.setText("Inc VAT");
+        cbUpdateItemIncVat.setText("Inc Output VAT");
 
         javax.swing.GroupLayout UpdateItemLayout = new javax.swing.GroupLayout(UpdateItem);
         UpdateItem.setLayout(UpdateItemLayout);
@@ -871,19 +935,17 @@ public class POS_Main extends javax.swing.JFrame {
                         .addComponent(tfUpdateItemRRP))
                     .addComponent(layeredPaneUpdateItemDetails)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, UpdateItemLayout.createSequentialGroup()
-                        .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lUpdateItemItemName)
-                            .addComponent(lUpdateItemNoInStock)
-                            .addComponent(cbUpdateItemIncVat, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(UpdateItemLayout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comUpdateItemSelecter, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tfUpdateItemNoInStock)))
-                            .addGroup(UpdateItemLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(tfUpdateItemItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(cbUpdateItemIncVat)
+                        .addGap(25, 25, 25)
+                        .addComponent(comUpdateItemSelecter, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, UpdateItemLayout.createSequentialGroup()
+                        .addComponent(lUpdateItemItemName)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfUpdateItemItemName))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, UpdateItemLayout.createSequentialGroup()
+                        .addComponent(lUpdateItemNoInStock)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfUpdateItemNoInStock)))
                 .addGap(18, 18, 18)
                 .addComponent(bUpdateItemSubmit)
                 .addContainerGap())
@@ -899,9 +961,9 @@ public class POS_Main extends javax.swing.JFrame {
                             .addComponent(tfUpdateItemItemName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(bUpdateItemBack))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lUpdateItemNoInStock)
-                            .addComponent(tfUpdateItemNoInStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfUpdateItemNoInStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lUpdateItemNoInStock))
                         .addGap(12, 12, 12)
                         .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(comUpdateItemSelecter, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -909,7 +971,7 @@ public class POS_Main extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layeredPaneUpdateItemDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(UpdateItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tfUpdateItemRRP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(UpdateItemLayout.createSequentialGroup()
@@ -1067,13 +1129,23 @@ public class POS_Main extends javax.swing.JFrame {
 
             try {
                 int itemID = 1000 + tableStockView.getRowCount();
+                String incOutputVAT;
+                if(cbAddItemIncVat.isSelected())
+                    incOutputVAT = "Yse";
+                else
+                    incOutputVAT = "No";
 
                 if (comAddItemSelecter.getSelectedIndex() == 0) {
 
-                    boolean is_percent = (comAddItemMarkUpTypeA.getSelectedItem().toString() == "%");
+                    String is_percent;
+                    if(comAddItemMarkUpTypeA.getSelectedItem().toString() == "%")
+                        is_percent = "%";
+                    else
+                        is_percent = "£";
+                    
 
 
-                    dtm.addRow(new Object[]{
+                    /*dtm.addRow(new Object[]{
                         itemID,
                         tfAddItemItemName.getText(),
                         Integer.valueOf(tfAddItemNoInStock.getText()),
@@ -1081,14 +1153,15 @@ public class POS_Main extends javax.swing.JFrame {
                         Double.valueOf(tfAddItemCostA.getText()),
                         Double.valueOf(tfAddItemMarkUpA.getText()),
                         is_percent,
-                        Double.valueOf(tfAddItemRRP.getText())
-                    });
+                        Double.valueOf(tfAddItemRRP.getText()),
+                        incOutputVAT
+                    });*/
 
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
                     pst = sqlConn.prepareStatement("insert into mr_ios_pos.items (ItemID, Item_Name, No_In_Stock, Selling_Price, Cost, markUp, Is_markUp_Percent, RRP, Inc_VAT) value(?,?,?,?,?,?,?,?,?)");
                     int isPersent = 0;
-                    if (is_percent) {
+                    if (is_percent == "%") {
                         isPersent = 1;
                     }
                     pst.setString(1, String.valueOf(itemID));
@@ -1096,10 +1169,11 @@ public class POS_Main extends javax.swing.JFrame {
                     pst.setString(3, tfAddItemNoInStock.getText());
                     pst.setString(4, lAddItemSellingPrice.getText());
                     pst.setString(5, tfAddItemCostA.getText());
-                    pst.setString(6, tfAddItemMarkUpA.getText());
-                    pst.setString(7, String.valueOf(isPersent));
-                    pst.setString(8, tfAddItemRRP.getText());
-                    pst.setString(9, String.valueOf(cbAddItemIncVat.isSelected()));
+                    pst.setString(6, tfAddItemVATInputA.getText());
+                    pst.setString(7, tfAddItemMarkUpA.getText());
+                    pst.setString(8, String.valueOf(isPersent));
+                    pst.setString(9, tfAddItemRRP.getText());
+                    pst.setString(10, String.valueOf(cbAddItemIncVat.isSelected()));
 
                     pst.executeUpdate();
                     updateDB();
@@ -1109,7 +1183,7 @@ public class POS_Main extends javax.swing.JFrame {
                             Double.valueOf(tfAddItemSellingPriceB.getText()), Double.valueOf(tfAddItemCostB.getText()),
                             Double.valueOf(lAddItemMarkUpB.getText()), false, Double.valueOf(tfAddItemRRP.getText())));
 
-                    dtm.addRow(new Object[]{
+                    /*dtm.addRow(new Object[]{
                         itemID,
                         tfAddItemItemName.getText(),
                         Integer.valueOf(tfAddItemNoInStock.getText()),
@@ -1119,21 +1193,22 @@ public class POS_Main extends javax.swing.JFrame {
                         false,
                         Double.valueOf(tfAddItemRRP.getText()),
                         cbAddItemIncVat.isSelected()
-                    });
+                    });*/
 
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
                     pst = sqlConn.prepareStatement("insert into mr_ios_pos.items (ItemID, Item_Name, No_In_Stock, Selling_Price, Cost, markUp, Is_markUp_Percent, RRP, Inc_VAT) value(?,?,?,?,?,?,?,?,?)");
+                    
                     pst.setString(1, String.valueOf(itemID));
                     pst.setString(2, tfAddItemItemName.getText());
                     pst.setString(3, tfAddItemNoInStock.getText());
                     pst.setString(4, lAddItemSellingPrice.getText());
-                    pst.setString(5, tfAddItemCostA.getText());
-                    pst.setString(6, tfAddItemMarkUpA.getText());
-                    pst.setString(7, "0");
-                    pst.setString(8, tfAddItemRRP.getText());
-                    pst.setString(9, String.valueOf(cbAddItemIncVat.isSelected()));
-
+                    pst.setString(5, tfAddItemCostB.getText());
+                     pst.setString(6, tfAddItemVATInputB.getText());
+                    pst.setString(7, lAddItemMarkUpB.getText());
+                    pst.setString(8, "0");
+                    pst.setString(9, tfAddItemRRP.getText());
+                    pst.setString(10, String.valueOf(cbAddItemIncVat.isSelected()));
 
                     pst.executeUpdate();
                     updateDB();
@@ -1760,6 +1835,10 @@ public static void main(String args[]) {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1769,6 +1848,8 @@ public static void main(String args[]) {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItemSettings;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lAddItemCost;
     private javax.swing.JLabel lAddItemItemName;
     private javax.swing.JLabel lAddItemMarkUp;
@@ -1792,6 +1873,8 @@ public static void main(String args[]) {
     private javax.swing.JTextField tfAddItemNoInStock;
     private javax.swing.JTextField tfAddItemRRP;
     private javax.swing.JTextField tfAddItemSellingPriceB;
+    private javax.swing.JTextField tfAddItemVATInputA;
+    private javax.swing.JTextField tfAddItemVATInputB;
     private javax.swing.JTextField tfStockSearch;
     private javax.swing.JTextField tfUpdateItemCostA;
     private javax.swing.JTextField tfUpdateItemCostB;
