@@ -28,7 +28,6 @@ import java.util.Vector;
  * @author Matthew
  */
 public class POS_Main extends javax.swing.JFrame {
-    private ArrayList<StockItem> arrayList;
     
 
     private static final String userN = "root";
@@ -65,11 +64,11 @@ public class POS_Main extends javax.swing.JFrame {
                 dtm.addColumn("Item ID");
                 dtm.addColumn("Item Name");
                 dtm.addColumn("No In Stock");
-                dtm.addColumn("Selling Price");
-                dtm.addColumn("Cost");
+                dtm.addColumn("Cost Inc VAT");
                 dtm.addColumn("VAT_Input");
                 dtm.addColumn("Mark Up");
                 dtm.addColumn("Mark Up Type");
+                dtm.addColumn("Selling Price");                
                 dtm.addColumn("RRP");
                 dtm.addColumn("Inc VAT");
             }
@@ -82,8 +81,7 @@ public class POS_Main extends javax.swing.JFrame {
                    colDat.add(rs.getString("ItemID"));
                    colDat.add(rs.getString("Item_Name"));
                    colDat.add(rs.getString("No_In_Stock"));
-                   colDat.add(rs.getString("Selling_Price"));
-                   colDat.add(rs.getString("Cost"));
+                   colDat.add(rs.getString("Cost_Inc_VAT"));
                    colDat.add(rs.getString("VAT_Input"));
                    colDat.add(rs.getString("markUp"));
                    
@@ -92,6 +90,7 @@ public class POS_Main extends javax.swing.JFrame {
                    else
                        colDat.add("£");
                    
+                   colDat.add(rs.getString("Selling_Price"));
                    colDat.add(rs.getString("RRP"));
                                      
                    if(rs.getString("Inc_VAT").equals("1"))
@@ -178,7 +177,7 @@ public class POS_Main extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         lUpdateItemSellingPrice = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        tfUpdateItemVATInputA = new javax.swing.JTextField();
         CostAndSellingPrice1 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         tfUpdateItemCostB = new javax.swing.JTextField();
@@ -506,7 +505,6 @@ public class POS_Main extends javax.swing.JFrame {
                     .addGroup(CostAndMarkUpLayout.createSequentialGroup()
                         .addComponent(tfAddItemVATInputA)
                         .addGap(2, 2, 2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lAddItemMarkUp)
                     .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -516,7 +514,7 @@ public class POS_Main extends javax.swing.JFrame {
                 .addGroup(CostAndMarkUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(lAddItemSellingPrice))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         layeredPaneAddItemDetails.add(CostAndMarkUp, "card2");
@@ -597,7 +595,6 @@ public class POS_Main extends javax.swing.JFrame {
                     .addGroup(CostAndSellingPriceLayout.createSequentialGroup()
                         .addComponent(tfAddItemVATInputB)
                         .addGap(2, 2, 2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndSellingPriceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(tfAddItemSellingPriceB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -605,7 +602,7 @@ public class POS_Main extends javax.swing.JFrame {
                 .addGroup(CostAndSellingPriceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lAddItemMarkUpB))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         layeredPaneAddItemDetails.add(CostAndSellingPrice, "card2");
@@ -754,7 +751,7 @@ public class POS_Main extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("VAT Input £:");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tfUpdateItemVATInputA.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout CostAndMarkUp1Layout = new javax.swing.GroupLayout(CostAndMarkUp1);
         CostAndMarkUp1.setLayout(CostAndMarkUp1Layout);
@@ -779,7 +776,7 @@ public class POS_Main extends javax.swing.JFrame {
                             .addGroup(CostAndMarkUp1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))))
+                                .addComponent(tfUpdateItemVATInputA, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))))
                     .addGroup(CostAndMarkUp1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -794,7 +791,7 @@ public class POS_Main extends javax.swing.JFrame {
                     .addComponent(lUpdateItemCost)
                     .addComponent(tfUpdateItemCostA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField1))
+                    .addComponent(tfUpdateItemVATInputA))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndMarkUp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lUpdateItemMarkUp)
@@ -883,7 +880,6 @@ public class POS_Main extends javax.swing.JFrame {
                     .addGroup(CostAndSellingPrice1Layout.createSequentialGroup()
                         .addComponent(jTextField2)
                         .addGap(2, 2, 2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(tfUpdateItemSellingPriceB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -891,7 +887,7 @@ public class POS_Main extends javax.swing.JFrame {
                 .addGroup(CostAndSellingPrice1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(lUpdateItemMarkUpB))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         layeredPaneUpdateItemDetails.add(CostAndSellingPrice1, "card2");
@@ -1143,23 +1139,26 @@ public class POS_Main extends javax.swing.JFrame {
                     else
                         is_percent = "£";
                     
-
+                    String inputVAT = "0";
+                    if(!tfAddItemVATInputA.getText().isEmpty())
+                        inputVAT = tfAddItemVATInputA.getText();
 
                     /*dtm.addRow(new Object[]{
                         itemID,
                         tfAddItemItemName.getText(),
                         Integer.valueOf(tfAddItemNoInStock.getText()),
-                        Double.valueOf(lAddItemSellingPrice.getText()),
                         Double.valueOf(tfAddItemCostA.getText()),
+                        Double.valueOf(inputVAT),
                         Double.valueOf(tfAddItemMarkUpA.getText()),
                         is_percent,
+                        Double.valueOf(lAddItemSellingPrice.getText()),
                         Double.valueOf(tfAddItemRRP.getText()),
                         incOutputVAT
                     });*/
 
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
-                    pst = sqlConn.prepareStatement("insert into mr_ios_pos.items (ItemID, Item_Name, No_In_Stock, Selling_Price, Cost, markUp, Is_markUp_Percent, RRP, Inc_VAT) value(?,?,?,?,?,?,?,?,?)");
+                    pst = sqlConn.prepareStatement("insert into mr_ios_pos.items (ItemID, Item_Name, No_In_Stock,  Cost_Inc_VAT, markUp, Is_markUp_Percent, Selling_Price, RRP, Inc_VAT) value(?,?,?,?,?,?,?,?,?,?)");
                     int isPersent = 0;
                     if (is_percent == "%") {
                         isPersent = 1;
@@ -1167,11 +1166,11 @@ public class POS_Main extends javax.swing.JFrame {
                     pst.setString(1, String.valueOf(itemID));
                     pst.setString(2, tfAddItemItemName.getText());
                     pst.setString(3, tfAddItemNoInStock.getText());
-                    pst.setString(4, lAddItemSellingPrice.getText());
-                    pst.setString(5, tfAddItemCostA.getText());
-                    pst.setString(6, tfAddItemVATInputA.getText());
-                    pst.setString(7, tfAddItemMarkUpA.getText());
-                    pst.setString(8, String.valueOf(isPersent));
+                    pst.setString(4, tfAddItemCostA.getText());
+                    pst.setString(5, inputVAT);
+                    pst.setString(6, tfAddItemMarkUpA.getText());
+                    pst.setString(7, String.valueOf(isPersent));
+                    pst.setString(8, lAddItemSellingPrice.getText());
                     pst.setString(9, tfAddItemRRP.getText());
                     pst.setString(10, String.valueOf(cbAddItemIncVat.isSelected()));
 
@@ -1179,9 +1178,7 @@ public class POS_Main extends javax.swing.JFrame {
                     updateDB();
 
                 } else {
-                    arrayList.add(new StockItem(itemID, tfAddItemItemName.getText(), Integer.valueOf(tfAddItemNoInStock.getText()),
-                            Double.valueOf(tfAddItemSellingPriceB.getText()), Double.valueOf(tfAddItemCostB.getText()),
-                            Double.valueOf(lAddItemMarkUpB.getText()), false, Double.valueOf(tfAddItemRRP.getText())));
+
 
                     /*dtm.addRow(new Object[]{
                         itemID,
@@ -1197,16 +1194,16 @@ public class POS_Main extends javax.swing.JFrame {
 
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
-                    pst = sqlConn.prepareStatement("insert into mr_ios_pos.items (ItemID, Item_Name, No_In_Stock, Selling_Price, Cost, markUp, Is_markUp_Percent, RRP, Inc_VAT) value(?,?,?,?,?,?,?,?,?)");
+                    pst = sqlConn.prepareStatement("insert into mr_ios_pos.items (ItemID, Item_Name, No_In_Stock,  Cost_Inc_VAT, markUp, Is_markUp_Percent, Selling_Price, RRP, Inc_VAT) value(?,?,?,?,?,?,?,?,?)");
                     
                     pst.setString(1, String.valueOf(itemID));
                     pst.setString(2, tfAddItemItemName.getText());
                     pst.setString(3, tfAddItemNoInStock.getText());
-                    pst.setString(4, lAddItemSellingPrice.getText());
                     pst.setString(5, tfAddItemCostB.getText());
                      pst.setString(6, tfAddItemVATInputB.getText());
                     pst.setString(7, lAddItemMarkUpB.getText());
                     pst.setString(8, "0");
+                    pst.setString(4, lAddItemSellingPrice.getText());
                     pst.setString(9, tfAddItemRRP.getText());
                     pst.setString(10, String.valueOf(cbAddItemIncVat.isSelected()));
 
@@ -1257,7 +1254,7 @@ public class POS_Main extends javax.swing.JFrame {
         if (!tfAddItemCostA.getText().isEmpty() && !tfAddItemMarkUpA.getText().isEmpty()) {
 
             if (comAddItemMarkUpTypeA.getSelectedIndex() == 1) {
-                //if "�"
+                //if "£"
                 double cost = Double.valueOf(tfAddItemCostA.getText());
                 double markUp = Double.valueOf(tfAddItemMarkUpA.getText());
                 double price = cost + markUp;
@@ -1400,20 +1397,21 @@ public class POS_Main extends javax.swing.JFrame {
 
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
-                    pst = sqlConn.prepareStatement("update items set Item_Name = ?, No_In_Stock = ?, Selling_Price = ?, Cost = ?, markUp = ?, Is_markUp_Percent = ?, RRP = ?, Inc_VAT = ? where ItemID = ?");
+                    pst = sqlConn.prepareStatement("update items set Item_Name = ?, No_In_Stock = ?, Cost_Inc_VAT = ?, markUp = ?, Is_markUp_Percent = ?, Selling_Price = ?, RRP = ?, Inc_VAT = ? where ItemID = ?");
                     int isPersent = 0;
                     if (is_percent) {
                         isPersent = 1;
                     }
+                    pst.setString(0, updateIDPlaceHolder);
                     pst.setString(1, tfUpdateItemItemName.getText());
                     pst.setString(2, tfUpdateItemNoInStock.getText());
-                    pst.setString(3, lUpdateItemSellingPrice.getText());
+                    pst.setString(8, String.valueOf(cbUpdateItemIncVat.isSelected()));
                     pst.setString(4, tfUpdateItemCostA.getText());
                     pst.setString(5, tfUpdateItemMarkUpA.getText());
                     pst.setString(6, String.valueOf(isPersent));
-                    pst.setString(7, tfUpdateItemRRP.getText());
-                    pst.setString(8, String.valueOf(cbUpdateItemIncVat.isSelected()));
-                    pst.setString(9, updateIDPlaceHolder);
+                    pst.setString(3, lUpdateItemSellingPrice.getText());
+                    pst.setString(7, tfUpdateItemRRP.getText());                    
+                    
 
                     pst.executeUpdate();
                     updateDB();
@@ -1421,16 +1419,17 @@ public class POS_Main extends javax.swing.JFrame {
                 } else {           
                     Class.forName("com.mysql.jdbc.Driver");
                     sqlConn = DriverManager.getConnection(dbConn, userN, pWord);
-                    pst = sqlConn.prepareStatement("update items set Item_Name = ?, No_In_Stock = ?, Selling_Price = ?, Cost = ?, markUp = ?, Is_markUp_Percent = ?, RRP = ?, Inc_VAT = ? where ItemID = ?");
+                    pst = sqlConn.prepareStatement("update items set Item_Name = ?, No_In_Stock = ?,  Cost_Inc_VAT = ?, markUp = ?, Is_markUp_Percent = ?, Selling_Price = ?, RRP = ?, Inc_VAT = ? where ItemID = ?");
+                    pst.setString(0, updateIDPlaceHolder);
                     pst.setString(1, tfUpdateItemItemName.getText());
-                    pst.setString(2, tfUpdateItemNoInStock.getText());
-                    pst.setString(3, lUpdateItemSellingPrice.getText());
+                    pst.setString(2, tfUpdateItemNoInStock.getText());                    
                     pst.setString(4, tfUpdateItemCostA.getText());
                     pst.setString(5, tfUpdateItemMarkUpA.getText());
                     pst.setString(6, "0");
+                    pst.setString(3, lUpdateItemSellingPrice.getText());
                     pst.setString(7, tfUpdateItemRRP.getText());
                     pst.setString(8, String.valueOf(cbUpdateItemIncVat.isSelected()));
-                    pst.setString(9, updateIDPlaceHolder);
+                    
 
 
                     pst.executeUpdate();
@@ -1528,7 +1527,7 @@ public class POS_Main extends javax.swing.JFrame {
         jLayeredPane.revalidate();    }//GEN-LAST:event_bStockEditActionPerformed
 
     private void tableStockViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableStockViewMouseClicked
-            //DefaultTableModel dtm = (DefaultTableModel)tableStockView.getModel();
+
             int selsectedRow = tableStockView.getSelectedRow();
             
             updateIDPlaceHolder = tableStockView.getValueAt(selsectedRow, 0).toString();
@@ -1536,15 +1535,18 @@ public class POS_Main extends javax.swing.JFrame {
             tfUpdateItemItemName.setText(tableStockView.getValueAt(selsectedRow, 1).toString());
             tfUpdateItemNoInStock.setText(tableStockView.getValueAt(selsectedRow, 2).toString());
             
-            tfUpdateItemCostA.setText(tableStockView.getValueAt(selsectedRow, 4).toString());
+            tfUpdateItemCostA.setText(tableStockView.getValueAt(selsectedRow, 3).toString());
+            tfUpdateItemVATInputA.setText(tableStockView.getValueAt(selsectedRow, 4).toString());
             lUpdateItemSellingPrice.setText(tableStockView.getValueAt(selsectedRow, 3).toString());
             tfUpdateItemMarkUpA.setText(tableStockView.getValueAt(selsectedRow, 5).toString());
-            tfUpdateItemRRP.setText(tableStockView.getValueAt(selsectedRow, 7).toString());
+            tfUpdateItemRRP.setText(tableStockView.getValueAt(selsectedRow, 8).toString());
 
             if("1".equals(tableStockView.getValueAt(selsectedRow, 6).toString()))
                 comUpdateItemMarkUpTypeA.setSelectedIndex(1);
             else
                 comUpdateItemMarkUpTypeA.setSelectedIndex(0);
+            
+            cbUpdateItemIncVat.setSelected(tableStockView.getValueAt(selsectedRow, 9).toString().equals("Yes"));
 
     }//GEN-LAST:event_tableStockViewMouseClicked
 
@@ -1848,7 +1850,6 @@ public static void main(String args[]) {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItemSettings;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lAddItemCost;
     private javax.swing.JLabel lAddItemItemName;
@@ -1883,6 +1884,7 @@ public static void main(String args[]) {
     private javax.swing.JTextField tfUpdateItemNoInStock;
     private javax.swing.JTextField tfUpdateItemRRP;
     private javax.swing.JTextField tfUpdateItemSellingPriceB;
+    private javax.swing.JTextField tfUpdateItemVATInputA;
     private javax.swing.JTextPane tfVAT;
     private javax.swing.JLabel tfVATName;
     // End of variables declaration//GEN-END:variables
